@@ -1,11 +1,27 @@
 import { useSelector } from "react-redux";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import store from "@app/store";
 
-const PrivateRoutes = () => {
-  // determine if authorized, from context or however you're doing it    // If authorized, return an outlet that will render child elements
-  const { auth } = useSelector((state) => state.auth);
-  // If not, return element that will navigate to login page
-  return auth ? <Outlet /> : <Navigate to="/login" />;
+const ProtectedRoutes = () => {
+  const auth = useSelector((state) => state.auth);
+  const location = useLocation();
+  const { pathname } = location;
+  const isAuth = auth.isAuthenticated;
+
+  const user = store.getState().auth.user;
+  //Se harcodea el rol para testear
+  const roles = [{ id: 1, nombre: "ADMIN" }];
+  // se descomenta cuando se tenga el rol del api
+  // const roles = user.roles;
+  const isAdmin = roles.some((role) => role.nombre === "ADMIN");
+
+  if (isAuth && isAdmin) {
+    return <Outlet />;
+  } else if (isAuth && !isAdmin) {
+    return <Navigate to="/" />;
+  } else {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 };
 
-export default PrivateRoutes;
+export default ProtectedRoutes;

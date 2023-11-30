@@ -4,7 +4,7 @@ import { FiLogOut } from "react-icons/fi";
 import { NavLink, useNavigate } from "react-router-dom";
 // import logo from "../../assets/logo2.png";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "@features/authSlice";
+import { logout } from "@slices/authSlice";
 
 const usuario = {
   // nombre: "Juan",
@@ -20,10 +20,10 @@ const usuario = {
 
 const Navbar = () => {
   const [changeHeader, setChangeHeader] = useState(false);
-  const history = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  console.log(user);
+  const auth = useSelector((state) => state.auth);
+  console.log(auth);
 
   //   const { order } = useOrder();
 
@@ -57,7 +57,7 @@ const Navbar = () => {
             className="w-36 cursor-pointer"
             src={"https://i.ibb.co/0s3pdnc/logo2.png"}
             alt="logo"
-            onClick={() => history.push("/")}
+            onClick={() => navigate("/")}
           />
         </div>
         {/* right  */}
@@ -69,7 +69,7 @@ const Navbar = () => {
               </NavLink>
               <div
                 className="relative flex cursor-pointer"
-                onClick={() => history.push("/cart")}
+                onClick={() => navigate("/cart")}
               >
                 {/* <span className="bg-primary w-6 h-6 rounded-full flex items-center justify-center text-white  absolute -right-2 -top-2">
                   {order.length}
@@ -93,14 +93,14 @@ const Navbar = () => {
         ) : (
           <>
             <div className="flex items-center justify-end space-x-6">
-              <button className="" onClick={() => history.push("/login")}>
+              <button className="" onClick={() => navigate("/login")}>
                 Login
               </button>
               <button
-                className="bg-primary px-6 py-3 text-white rounded-full ring-red-300 focus:outline-none focus:ring-4 transform transition duration-700 hover:scale-105"
-                onClick={() => history.push("/register")}
+                className="bg-primary px-6 py-3 text-white rounded-full ring-blue-300 focus:outline-none focus:ring-4 transform transition duration-700 hover:scale-105"
+                onClick={() => navigate("/register")}
               >
-                Register
+                Registrarse
               </button>
             </div>
           </>

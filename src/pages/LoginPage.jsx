@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Brand from "@components/Brand";
 import Button from "@components/Button";
 // import GoogleSignIn from "@components/GoogleSignIn";
 import TextField from "@components/TextField";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "@features/authSlice";
+import { login } from "@slices/authSlice";
 
 const LoginPage = () => {
   const [userInput, setUserInput] = useState({
@@ -13,19 +13,22 @@ const LoginPage = () => {
     password: "",
   });
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  // sign in user
-  const signInUser = (email, password) => {
-    dispatch(login({ email, password }));
-  };
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
-    setUserInput({ ...userInput, [e.target.name]: e.target.value });
+    setUserInput({
+      ...userInput,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signInUser(userInput.correo, userInput.password);
+    dispatch(login(userInput));
+    if (auth.isAuthenticated) {
+      navigate("/");
+    }
   };
 
   const Inputs = [
