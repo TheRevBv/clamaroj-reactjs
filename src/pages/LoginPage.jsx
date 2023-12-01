@@ -5,7 +5,7 @@ import Button from "@components/Button";
 // import GoogleSignIn from "@components/GoogleSignIn";
 import TextField from "@components/TextField";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "@slices/authSlice";
+import { loginAsync } from "@slices/authSlice";
 
 const LoginPage = () => {
   const [userInput, setUserInput] = useState({
@@ -14,7 +14,6 @@ const LoginPage = () => {
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const auth = useSelector((state) => state.auth);
 
   const handleChange = (e) => {
     setUserInput({
@@ -25,10 +24,8 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(login(userInput));
-    if (auth.isAuthenticated) {
-      navigate("/");
-    }
+    dispatch(loginAsync(userInput));
+    navigate("/");
   };
 
   const Inputs = [

@@ -1,8 +1,21 @@
-# React + Vite
+# Clamaroj React App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Instalación
 
-Currently, two official plugins are available:
+- Clonar el proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+git clone https://github.com/TheRevBv/clamaroj-reactjs.git
+```
+
+- Instalar dependencias
+
+```bash
+yarn
+```
+
+- Configurar archivo de api, se copia el archivo ```.env.example```
+
+```bash
+cp .env.example .env
+```

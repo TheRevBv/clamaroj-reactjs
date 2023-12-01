@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 // import logo from "../../assets/logo2.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@slices/authSlice";
+import { persistor } from "@app/store";
 
 const usuario = {
   // nombre: "Juan",
@@ -23,12 +24,14 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+  const { user } = auth;
   console.log(auth);
 
   //   const { order } = useOrder();
 
   const logoutUser = () => {
     dispatch(logout());
+    persistor.purge();
   };
 
   //header change function
@@ -61,7 +64,7 @@ const Navbar = () => {
           />
         </div>
         {/* right  */}
-        {usuario.nombre ? (
+        {user ? (
           <>
             <div className="flex items-center justify-end space-x-4">
               <NavLink to="/admin" className="text-gray-600">
@@ -77,12 +80,12 @@ const Navbar = () => {
                 <BsCart2 className="cursor-pointer w-6 h-6 text-gray-700" />
               </div>
               <img
-                src={usuario.foto}
-                alt={usuario.nombre + " " + usuario.apellido}
+                src={user.foto}
+                alt={user.nombre + " " + user.apellido}
                 className="w-10 h-10 rounded-full"
               />
               <p className="text-gray-700 hidden md:block lg:block">
-                {usuario.nombre + " " + usuario.apellido}
+                {user.correo}
               </p>
               <FiLogOut
                 className="cursor-pointer w-6 h-6 text-gray-700"

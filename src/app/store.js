@@ -10,7 +10,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import authReducer from "../slices/authSlice";
+import authReducer from "@slices/authSlice";
 
 const persistConfig = {
   key: "root",
