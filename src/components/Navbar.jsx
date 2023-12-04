@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BsCart2 } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { NavLink, useNavigate } from "react-router-dom";
-// import logo from "../../assets/logo2.png";
+import logo from "@assets/img/logos/logo_inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@slices/authSlice";
 import { persistor } from "@app/store";
@@ -25,7 +25,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
-  console.log(auth);
+  console.log(user);
 
   //   const { order } = useOrder();
 
@@ -58,7 +58,7 @@ const Navbar = () => {
         <div className="flex flex-grow">
           <img
             className="w-36 cursor-pointer"
-            src={"https://i.ibb.co/0s3pdnc/logo2.png"}
+            src={logo}
             alt="logo"
             onClick={() => navigate("/")}
           />
@@ -67,9 +67,9 @@ const Navbar = () => {
         {user ? (
           <>
             <div className="flex items-center justify-end space-x-4">
-              <NavLink to="/admin" className="text-gray-600">
+              {/* <NavLink to="/admin" className="text-gray-600">
                 Admin
-              </NavLink>
+              </NavLink> */}
               <div
                 className="relative flex cursor-pointer"
                 onClick={() => navigate("/cart")}
@@ -81,11 +81,11 @@ const Navbar = () => {
               </div>
               <img
                 src={user.foto}
-                alt={user.nombre + " " + user.apellido}
+                alt={user.nombre}
                 className="w-10 h-10 rounded-full"
               />
               <p className="text-gray-700 hidden md:block lg:block">
-                {user.correo}
+                {user.nombre}
               </p>
               <FiLogOut
                 className="cursor-pointer w-6 h-6 text-gray-700"
@@ -96,7 +96,10 @@ const Navbar = () => {
         ) : (
           <>
             <div className="flex items-center justify-end space-x-6">
-              <button className="" onClick={() => navigate("/login")}>
+              <button
+                className="text-slate-300"
+                onClick={() => navigate("/login")}
+              >
                 Login
               </button>
               <button

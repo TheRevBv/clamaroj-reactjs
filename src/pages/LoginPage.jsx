@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginAsync } from "@slices/authSlice";
 
 const LoginPage = () => {
+  const { user } = useSelector((state) => state.auth);
   const [userInput, setUserInput] = useState({
     correo: "",
     password: "",
@@ -46,41 +47,49 @@ const LoginPage = () => {
   ];
 
   return (
-    <main className="h-screen w-full banner">
-      <div className="flex flex-col justify-center items-center h-screen">
-        {/* logo  */}
-        <Brand />
-        {/* sign up form  */}
-        <form
-          className="bg-white w-96 mt-6 p-4 rounded-lg shadow-lg"
-          onSubmit={handleSubmit}
-        >
-          <div className="flex flex-col space-y-6">
-            {Inputs.map((input) => (
-              <TextField
-                key={input.id}
-                type={input.type}
-                placeholder={input.placeholder}
-                value={input.value}
-                name={input.name}
-                onChange={handleChange}
-              />
-            ))}
-          </div>
-          <Button text="Iniciar Sesion" />
-          <div className="flex justify-center my-4">
-            <NavLink
-              to="/register"
-              className="text-primary text-base text-primary text-center  hover:underline"
-            >
-              No tienes una cuenta? Registrate
-            </NavLink>
-          </div>
+    <>
+      <main className="h-screen w-full banner">
+        <div className="flex flex-col justify-center items-center h-screen">
+          {/* logo  */}
+          {/* <Brand /> */}
+          {/* sign up form  */}
+          <form
+            className="bg-white w-96 mt-6 p-4 rounded-lg shadow-lg  space-y-4"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex justify-center items-center space-x-2 flex-col">
+              <Brand />
+              <h1 className="text-2xl font-semibold text-primary">
+                Iniciar Sesion
+              </h1>
+            </div>
+            <div className="flex flex-col space-y-6">
+              {Inputs.map((input) => (
+                <TextField
+                  key={input.id}
+                  type={input.type}
+                  placeholder={input.placeholder}
+                  value={input.value}
+                  name={input.name}
+                  onChange={handleChange}
+                />
+              ))}
+            </div>
+            <Button text="Iniciar Sesion" />
+            <div className="flex justify-center items-center">
+              <NavLink
+                to="/register"
+                className="text-primary text-base text-primary text-center  hover:underline"
+              >
+                No tienes una cuenta? Registrate
+              </NavLink>
+            </div>
 
-          {/* <GoogleSignIn text="Sign In With Google" /> */}
-        </form>
-      </div>
-    </main>
+            {/* <GoogleSignIn text="Sign In With Google" /> */}
+          </form>
+        </div>
+      </main>
+    </>
   );
 };
 

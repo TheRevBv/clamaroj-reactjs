@@ -1,10 +1,29 @@
 const TextField = ({ ...rest }) => {
+  const { type } = rest;
+  const clases = [
+    "btn-textfield",
+    "file-input",
+    "calendar-input",
+    "password-input",
+  ];
+  let className = "";
+  switch (type) {
+    case "file":
+      className = clases[1];
+      break;
+    case "date":
+      className = clases[2];
+      break;
+    case "password":
+      className = clases[3];
+      break;
+    default:
+      className = clases[0];
+      break;
+  }
   return (
     <>
-      <input
-        {...rest}
-        className="w-full px-4 py-3 rounded-lg ring-red-200 focus:ring-4 focus:outline-none transition duration-300 border border-gray-300 focus:shadow-xl"
-      />
+      <input {...rest} className={className} />
     </>
   );
 };
