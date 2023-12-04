@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BsCart2 } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@slices/authSlice";
 import { persistor } from "@app/store";
+import { FaCartShopping } from "react-icons/fa6";
 
 const usuario = {
   // nombre: "Juan",
@@ -25,9 +26,26 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
-  console.log(auth);
+  //console.log(auth);
+  // Estado para almacenar la cantidad de artículos en el carrito
+  const [cantidadEnCarrito, setCantidadEnCarrito] = useState(0);
 
   //   const { order } = useOrder();
+
+  useEffect(() => {
+    // Obtener la cantidad de artículos del localStorage
+    const carrito = localStorage.getItem("cart");
+    console.log("cantidadAlmacenada", carrito);
+    const cantidadAlmacenada = JSON.parse(carrito)?.length;
+    console.log("cantidadAlmacenada1", cantidadAlmacenada);
+    // Actualizar el estado si hay una cantidad almacenada
+    if (cantidadAlmacenada) {
+      setCantidadEnCarrito(Number(cantidadAlmacenada));
+    } else {
+      setCantidadEnCarrito(0);
+    }
+    console.log("cantidadAlmacenada2", cantidadAlmacenada);
+  }, [cantidadEnCarrito]); // El segundo parámetro [] asegura que useEffect se ejecute solo una vez al montar el componente
 
   const logoutUser = () => {
     dispatch(logout());
@@ -43,22 +61,45 @@ const Navbar = () => {
     }
   };
 
+  const navStyle = {
+    //background: 'rgb(9, 53, 87)',
+    background:
+      "linear-gradient(157deg, rgba(8,33,53,1) 35%, rgba(8,50,77,1) 67%, rgba(3,36,60,1) 79%)",
+  };
+
+  const CarritoDeComprasIcono = ({ cantidadEnCarrito }) => {
+    return (
+      <div className="relative">
+        <FaCartShopping
+          className="cursor-pointer w-9 h-9 text-gray-700"
+          onClick={() => navigate("/cardProducts")}
+        />
+        {cantidadEnCarrito > 0 && (
+          <span className="absolute top-1 right-1 bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs">
+            {cantidadEnCarrito}
+          </span>
+        )}
+      </div>
+    );
+  };
+
   //change header by scrolling
   window.addEventListener("scroll", onChangeHeader);
   return (
     <header
       className={
         changeHeader
-          ? "bg-white fixed z-50 top-0 left-0 w-full shadow-md transition duration-500"
+          ? "fixed z-50 top-0 left-0 w-full shadow-md transition duration-500"
           : "bg-transparent fixed z-50 top-0 left-0 w-full transition duration-500"
       }
+      style={changeHeader ? navStyle : null}
     >
       <nav className="flex items-center max-w-screen-xl mx-auto px-6 py-3">
         {/* left  */}
         <div className="flex flex-grow">
           <img
             className="w-36 cursor-pointer"
-            src={"https://i.ibb.co/0s3pdnc/logo2.png"}
+            src="../src/assets/logo inicio.png"
             alt="logo"
             onClick={() => navigate("/")}
           />
@@ -66,7 +107,10 @@ const Navbar = () => {
         {/* right  */}
         {user ? (
           <>
-            <div className="flex items-center justify-end space-x-4">
+            <div
+              className="flex items-center justify-end space-x-4"
+              style={{ color: "white" }}
+            >
               <NavLink to="/admin" className="text-gray-600">
                 Admin
               </NavLink>
@@ -95,7 +139,10 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <div className="flex items-center justify-end space-x-6">
+            <div
+              className="flex items-center justify-end space-x-6"
+              style={{ color: "white" }}
+            >
               <button className="" onClick={() => navigate("/login")}>
                 Login
               </button>
@@ -108,6 +155,8 @@ const Navbar = () => {
             </div>
           </>
         )}
+
+        <CarritoDeComprasIcono cantidadEnCarrito={cantidadEnCarrito} />
       </nav>
     </header>
   );

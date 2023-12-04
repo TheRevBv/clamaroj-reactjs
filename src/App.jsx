@@ -8,6 +8,8 @@ import LoginPage from "@pages/LoginPage";
 import RegisterPage from "@pages/RegisterPage";
 import Navbar from "@components/Navbar";
 import ProtectedRoutes from "@components/ProtectedRoutes";
+import ProductosDeatil from "@pages/ProductosDeatil";
+import CarritoPage from "@pages/CarritoPage";
 
 const App = () => {
   return (
@@ -20,6 +22,11 @@ const App = () => {
             <Route exact path="/home" element={<HomePage />} />
             <Route exact path="/register" element={<RegisterPage />} />
             <Route exact path="/login" element={<LoginPage />} />
+            <Route
+              path="/productos/:idProducto"
+              element={<ProductosDeatil />}
+            />
+            <Route path="/cardProducts" element={<CarritoPage />} />
             <Route exact path="/cart" element={<ProtectedRoutes />}>
               <Route index element={<h1>Cart</h1>} />
             </Route>
