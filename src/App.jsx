@@ -2,14 +2,15 @@ import { Fragment } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "@app/store";
-import HomePage from "@pages/HomePage";
-import ErrorPage from "@pages/ErrorPage";
-import LoginPage from "@pages/LoginPage";
-import RegisterPage from "@pages/RegisterPage";
-import Navbar from "@components/Navbar";
 import CarritoPage from "@pages/CarritoPage";
-import ProtectedRoutes from "@components/ProtectedRoutes";
+import ErrorPage from "@pages/ErrorPage";
+import HomePage from "@pages/HomePage";
+import LoginPage from "@pages/LoginPage";
+import Navbar from "@components/Navbar";
 import ProductosDetails from "@pages/ProductosDetails";
+import ProtectedRoutes from "@components/ProtectedRoutes";
+import RegisterPage from "@pages/RegisterPage";
+import PedidosPage from "@pages/PedidosPage";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
               />
               <Route exact path="/cart" element={<CarritoPage />} />
             </Route>
+            <Route exact path="/pedidos" element={<PedidosPage />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Fragment>

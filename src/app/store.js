@@ -11,6 +11,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import authReducer from "@slices/authSlice";
+import pedidosReducer from "@slices/PedidosSlice";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +24,7 @@ const persistedReducer = persistReducer(persistConfig, authReducer);
 const store = configureStore({
   reducer: {
     auth: persistedReducer,
+    pedidos: pedidosReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
