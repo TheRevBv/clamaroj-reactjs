@@ -1,12 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { PURGE } from "redux-persist";
+// import { PURGE } from "redux-persist";
 
 export const loginAsync = createAsyncThunk(
   "auth/loginAsync",
   async (credentials) => {
     try {
-      console.log(import.meta.env.VITE_APP_API_URL);
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/auth/login`,
         credentials

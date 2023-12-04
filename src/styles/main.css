@@ -1,12 +1,77 @@
 .bg-primary {
-  @apply bg-blue-950;
+  @apply bg-red-600;
 }
 .bg-primary-dark {
-  @apply bg-blue-900;
+  @apply bg-red-700;
 }
 .text-primary {
-  @apply text-blue-950;
+  @apply text-red-600;
 }
 .border-primary {
-  @apply border-blue-950;
+  @apply border-red-600;
+}
+
+/* Estilos componentes */
+
+body {
+  @apply bg-gray-50 m-0 font-poppins scroll-smooth antialiased overflow-x-hidden;
+}
+
+.orderContainer::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.header-banner {
+  @apply bg-cover bg-center bg-no-repeat h-screen w-full bg-clamaroj-bg;
+}
+.banner {
+  @apply bg-cover bg-center bg-no-repeat h-screen w-full bg-clamaroj-bg;
+}
+
+.text-secondary {
+  @apply text-orange-600;
+}
+
+.border-primary {
+  @apply border-red-600 border-opacity-50 border-2;
+  /* border: 1px solid #f91944; */
+}
+
+/* Glassmorphism card effect */
+.glass {
+  @apply bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg backdrop-saturate-150 border border-gray-300 border-opacity-20 rounded-lg shadow-lg;
+  /* backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.57);
+  border-radius: 12px;
+  border: 1px solid rgba(209, 213, 219, 0.3); */
+}
+
+.btn-textfield {
+  @apply w-full px-4 py-3 rounded-lg ring-red-400 focus:ring-4 focus:outline-none transition duration-300 border border-gray-300 focus:shadow-xl;
+}
+
+.file-input {
+  @apply btn-textfield relative overflow-hidden cursor-pointer;
+}
+
+.file-input::file-selector-button {
+  @apply bg-orange-500 text-white font-semibold px-4 py-2 rounded-lg transition duration-300 border-none;
+}
+
+.file-input::file-selector-button:hover {
+  @apply bg-orange-600;
+}
+
+.calendar-input {
+  @apply btn-textfield relative overflow-hidden;
+}
+
+.calendar-input::calendar-button {
+  @apply bg-orange-500 text-white font-semibold px-4 py-2 rounded-lg transition duration-300 border-none;
+}
+
+.password-input {
+  @apply btn-textfield relative overflow-hidden;
 }

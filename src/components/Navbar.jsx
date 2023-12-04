@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { BsCart2 } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { NavLink, useNavigate } from "react-router-dom";
-// import logo from "../../assets/logo2.png";
+import logo from "@assets/img/logos/logo_inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@slices/authSlice";
 import { persistor } from "@app/store";
@@ -26,7 +26,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
-  //console.log(auth);
   // Estado para almacenar la cantidad de artículos en el carrito
   const [cantidadEnCarrito, setCantidadEnCarrito] = useState(0);
 
@@ -99,7 +98,7 @@ const Navbar = () => {
         <div className="flex flex-grow">
           <img
             className="w-36 cursor-pointer"
-            src="../src/assets/logo inicio.png"
+            src={logo}
             alt="logo"
             onClick={() => navigate("/")}
           />
@@ -107,13 +106,10 @@ const Navbar = () => {
         {/* right  */}
         {user ? (
           <>
-            <div
-              className="flex items-center justify-end space-x-4"
-              style={{ color: "white" }}
-            >
-              <NavLink to="/admin" className="text-gray-600">
+            <div className="flex items-center justify-end space-x-4">
+              {/* <NavLink to="/admin" className="text-gray-600">
                 Admin
-              </NavLink>
+              </NavLink> */}
               <div
                 className="relative flex cursor-pointer"
                 onClick={() => navigate("/cart")}
@@ -121,29 +117,29 @@ const Navbar = () => {
                 {/* <span className="bg-primary w-6 h-6 rounded-full flex items-center justify-center text-white  absolute -right-2 -top-2">
                   {order.length}
                 </span> */}
-                <BsCart2 className="cursor-pointer w-6 h-6 text-gray-700" />
+                <BsCart2 className="cursor-pointer w-6 h-6 text-slate-300" />
               </div>
               <img
                 src={user.foto}
-                alt={user.nombre + " " + user.apellido}
+                alt={user.nombre}
                 className="w-10 h-10 rounded-full"
               />
-              <p className="text-gray-700 hidden md:block lg:block">
-                {user.correo}
+              <p className="text-slate-300 hidden md:block lg:block">
+                {user.nombre}
               </p>
               <FiLogOut
-                className="cursor-pointer w-6 h-6 text-gray-700"
+                className="cursor-pointer w-6 h-6 text-slate-300"
                 onClick={logoutUser}
               />
             </div>
           </>
         ) : (
           <>
-            <div
-              className="flex items-center justify-end space-x-6"
-              style={{ color: "white" }}
-            >
-              <button className="" onClick={() => navigate("/login")}>
+            <div className="flex items-center justify-end space-x-6">
+              <button
+                className="text-slate-300"
+                onClick={() => navigate("/login")}
+              >
                 Login
               </button>
               <button
