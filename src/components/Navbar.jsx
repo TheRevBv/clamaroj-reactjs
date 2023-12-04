@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BsCart2 } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import logo from "@assets/img/logos/logo_inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@slices/authSlice";
 import { persistor } from "@app/store";
+import { FaCartShopping } from "react-icons/fa6";
 
 const usuario = {
   // nombre: "Juan",
@@ -25,9 +26,25 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
-  console.log(user);
+  // Estado para almacenar la cantidad de artículos en el carrito
+  const [cantidadEnCarrito, setCantidadEnCarrito] = useState(0);
 
   //   const { order } = useOrder();
+
+  useEffect(() => {
+    // Obtener la cantidad de artículos del localStorage
+    const carrito = localStorage.getItem("cart");
+    console.log("cantidadAlmacenada", carrito);
+    const cantidadAlmacenada = JSON.parse(carrito)?.length;
+    console.log("cantidadAlmacenada1", cantidadAlmacenada);
+    // Actualizar el estado si hay una cantidad almacenada
+    if (cantidadAlmacenada) {
+      setCantidadEnCarrito(Number(cantidadAlmacenada));
+    } else {
+      setCantidadEnCarrito(0);
+    }
+    console.log("cantidadAlmacenada2", cantidadAlmacenada);
+  }, [cantidadEnCarrito]); // El segundo parámetro [] asegura que useEffect se ejecute solo una vez al montar el componente
 
   const logoutUser = () => {
     dispatch(logout());
@@ -43,15 +60,38 @@ const Navbar = () => {
     }
   };
 
+  const navStyle = {
+    //background: 'rgb(9, 53, 87)',
+    background:
+      "linear-gradient(157deg, rgba(8,33,53,1) 35%, rgba(8,50,77,1) 67%, rgba(3,36,60,1) 79%)",
+  };
+
+  const CarritoDeComprasIcono = ({ cantidadEnCarrito }) => {
+    return (
+      <div className="relative">
+        <FaCartShopping
+          className="cursor-pointer w-9 h-9 text-gray-700"
+          onClick={() => navigate("/cardProducts")}
+        />
+        {cantidadEnCarrito > 0 && (
+          <span className="absolute top-1 right-1 bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs">
+            {cantidadEnCarrito}
+          </span>
+        )}
+      </div>
+    );
+  };
+
   //change header by scrolling
   window.addEventListener("scroll", onChangeHeader);
   return (
     <header
       className={
         changeHeader
-          ? "bg-white fixed z-50 top-0 left-0 w-full shadow-md transition duration-500"
+          ? "fixed z-50 top-0 left-0 w-full shadow-md transition duration-500"
           : "bg-transparent fixed z-50 top-0 left-0 w-full transition duration-500"
       }
+      style={changeHeader ? navStyle : null}
     >
       <nav className="flex items-center max-w-screen-xl mx-auto px-6 py-3">
         {/* left  */}
@@ -77,18 +117,18 @@ const Navbar = () => {
                 {/* <span className="bg-primary w-6 h-6 rounded-full flex items-center justify-center text-white  absolute -right-2 -top-2">
                   {order.length}
                 </span> */}
-                <BsCart2 className="cursor-pointer w-6 h-6 text-gray-700" />
+                <BsCart2 className="cursor-pointer w-6 h-6 text-slate-300" />
               </div>
               <img
                 src={user.foto}
                 alt={user.nombre}
                 className="w-10 h-10 rounded-full"
               />
-              <p className="text-gray-700 hidden md:block lg:block">
+              <p className="text-slate-300 hidden md:block lg:block">
                 {user.nombre}
               </p>
               <FiLogOut
-                className="cursor-pointer w-6 h-6 text-gray-700"
+                className="cursor-pointer w-6 h-6 text-slate-300"
                 onClick={logoutUser}
               />
             </div>
@@ -111,6 +151,8 @@ const Navbar = () => {
             </div>
           </>
         )}
+
+        <CarritoDeComprasIcono cantidadEnCarrito={cantidadEnCarrito} />
       </nav>
     </header>
   );

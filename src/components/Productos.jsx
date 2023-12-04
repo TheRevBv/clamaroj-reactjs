@@ -49,7 +49,7 @@ const productos = [
     nombre: "GOMICHELA",
     descripcion: "Michelada con gomitas y chamoy",
     precio: 70,
-    foto: "gomilocas.jpg",
+    foto: "https://www.estilodf.tv/wp-content/uploads/2020/07/e79ac61934cb1105482631c5261da8c5.jpg",
     merma: 4,
     estatus: "Activo",
   },
@@ -68,6 +68,15 @@ const productos = [
 const Productos = () => {
   const [menuTab, setMenuTab] = useState("Todos");
   const [loading, setLoading] = useState(false);
+  const [productosApi, setProductosApi] = useState([]);
+
+  const getProductos = async () => {
+    const res = await fetch("http://localhost:7092/api/Productos");
+    const data = await res.json();
+    setProductosApi(data);
+    console.log(data);
+    console.log("productosApi", productosApi);
+  };
 
   //loading
   useEffect(() => {
@@ -75,6 +84,11 @@ const Productos = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
+  }, []);
+
+  //get productos
+  useEffect(() => {
+    getProductos();
   }, []);
 
   //food menu tab
@@ -120,7 +134,7 @@ const Productos = () => {
 
       {/* all products  */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
-        {productos.map((producto) =>
+        {productosApi.map((producto) =>
           loading ? (
             <Skeleton key={producto.idProducto} />
           ) : (

@@ -9,6 +9,8 @@ import RegisterPage from "@pages/RegisterPage";
 import Navbar from "@components/Navbar";
 import CarritoPage from "@pages/CarritoPage";
 import ProtectedRoutes from "@components/ProtectedRoutes";
+import ProductosDeatil from "@pages/ProductosDeatil";
+import CarritoPage from "@pages/CarritoPage";
 
 const App = () => {
   return (
@@ -22,7 +24,8 @@ const App = () => {
             <Route element={<ProtectedRoutes />}>
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
-              <Route exact path="/cart" element={<CarritoPage />} />
+							<Route exact path="/productos/:idProducto" element={<ProductosDeatil />} />
+            	<Route exact path="/cardProducts" element={<CarritoPage />} />
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
