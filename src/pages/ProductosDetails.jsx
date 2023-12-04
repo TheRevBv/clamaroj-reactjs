@@ -3,9 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import { FaBagShopping } from "react-icons/fa6";
 import { TbShoppingCartCheck } from "react-icons/tb";
-//import Swal from "sweetalert2";
+import swal from "sweetalert";
 
-const ProductosDeatil = () => {
+const ProductosDetails = () => {
   const [product, setProduct] = useState({});
   const { idProducto } = useParams();
   const [productAdded, setProductAdded] = useState(false);
@@ -25,7 +25,6 @@ const ProductosDeatil = () => {
 
       if (!Array.isArray(data)) {
         setProduct(data);
-        console.log("data", data);
       } else {
         throw new Error("Producto no encontrado");
       }
@@ -56,8 +55,7 @@ const ProductosDeatil = () => {
   //Añadir articulo al local storage
   //Añadir articulo al local storage
   const addProduct = () => {
-    console.log("addProduct");
-    removeProduct();
+    // removeProduct();
     //Verificar si la caantidad es diferente a la cantidad en el carrito
     if (cantidadEnCarrito !== quantity) {
       //Si es diferente, actualizar la cantidad en el carrito
@@ -65,10 +63,10 @@ const ProductosDeatil = () => {
     }
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     cart.push({ ...product, cantidad: quantity });
-    console.log("cart2", cart);
     setProductAdded(true);
     // Actualizar el localStorage y el estado de cantidadEnCarrito
     localStorage.setItem("cart", JSON.stringify(cart));
+    swal("Producto agregado al carrito", "", "success");
   };
 
   const removeProduct = () => {
@@ -79,17 +77,15 @@ const ProductosDeatil = () => {
     const index = cart.findIndex(
       (item) => item.idProducto === product.idProducto
     );
-    console.log("index remove", index);
 
     if (index > -1) {
-      console.log("si entra");
       // Si el producto está en el carrito, eliminarlo en esa posición
       cart.splice(index, 1);
 
       // Actualizar el localStorage y el estado de cantidadEnCarrito
       localStorage.setItem("cart", JSON.stringify(cart));
-      console.log("removeProduct", cart);
       //setCantidadEnCarrito((prevCantidad) => Math.max(0, prevCantidad - 1));
+      swal("Producto eliminado del carrito", "", "success");
     }
   };
 
@@ -109,11 +105,9 @@ const ProductosDeatil = () => {
     const index = cart.findIndex(
       (item) => item.idProducto === product.idProducto
     );
-    console.log("index isadded", index);
     if (index > -1) {
       let cantidadArticulos = cart[index].cantidad;
       setCantidadEnCarrito(cantidadArticulos);
-      console.log("cantidadArticulos", cantidadArticulos);
       setProductAdded(true);
     } else {
       setCantidadEnCarrito(0);
@@ -138,7 +132,7 @@ const ProductosDeatil = () => {
 
           {/* Columna 2 */}
           <div className="w-full sm:w-1/2 p-4">
-            <h1 className="text-lg font-semibold mb-4 text-center">
+            <h1 className="text-3xl font-semibold mb-4 text-center uppercase text-primary">
               {product.nombre}
             </h1>
             <h2 className="card-text text-center">{product.descripcion}</h2>
@@ -148,35 +142,44 @@ const ProductosDeatil = () => {
             <h2 className="text-lg font-semibold mb-4">
               Código: <strong>{product.codigo}</strong>
             </h2>
-            <div className="text-center">
+            <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center space-x-4">
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                  className="bg-primary text-white font-bold py-2 px-4 rounded-full"
                   onClick={handleDecrement}
                 >
-                  -
+                  {"-"}
                 </button>
                 <p className="text-lg font-semibold">{quantity}</p>
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+                  className="bg-primary text-white font-bold py-2 px-4 rounded-full"
                   onClick={handleIncrement}
                 >
-                  +
+                  {"+"}
                 </button>
               </div>
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4"
-                onClick={() => {
-                  addProduct();
-                }}
-              >
-                Agregar <FaBagShopping className="ml-4" />
-              </button>
+              <div className="flex w-full justify-center">
+                <button
+                  className="bg-primary text-white font-bold rounded-full flex items-center justify-center mt-4 w-full py-2 px-4 my-4"
+                  onClick={() => {
+                    addProduct();
+                  }}
+                >
+                  Agregar <FaBagShopping className="ml-4" />
+                </button>
+              </div>
             </div>
             {productAdded ? (
-              <p> Haz Agregado {cantidadEnCarrito} articulos a tu carrito</p>
+              <button
+                className="bg-primary text-white font-bold rounded-full flex items-center justify-center mt-4 w-full py-2 px-4 my-4"
+                onClick={() => {
+                  removeProduct();
+                }}
+              >
+                Quitar <TbShoppingCartCheck className="ml-4" />
+              </button>
             ) : (
-              <p> No haz agregado este articulo a tu carrito!</p>
+              ""
             )}
           </div>
         </div>
@@ -185,4 +188,4 @@ const ProductosDeatil = () => {
   );
 };
 
-export default ProductosDeatil;
+export default ProductosDetails;

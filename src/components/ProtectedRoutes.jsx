@@ -3,12 +3,15 @@ import { useSelector } from "react-redux";
 
 const ProtectedRoutes = ({ isAllowed, redirectTo = "/", children }) => {
   const location = useLocation();
-  const { user } = useSelector((state) => state.auth);
-  // console.log(user);
+  const { user, token } = useSelector((state) => state.auth);
 
-  // if (!isAllowed) {
-  //   return <Navigate to={redirectTo} replace />;
-  // }
+  if (!user && !token) {
+    if (location.pathname == "/login" || location.pathname == "/register") {
+      return children ? children : <Outlet />;
+    } else {
+      return <Navigate to="/login" replace />;
+    }
+  }
 
   if (
     user &&

@@ -48,7 +48,8 @@ export const authSlice = createSlice({
       state.token = null;
       state.status = "idle";
       state.error = null;
-      sessionStorage.removeItem("token");
+      sessionStorage.clear();
+      localStorage.clear();
     },
   },
   extraReducers: {

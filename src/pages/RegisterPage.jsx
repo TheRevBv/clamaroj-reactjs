@@ -26,7 +26,6 @@ const RegisterPage = () => {
         ...userInput,
         [e.target.name]: e.target.files[0],
       });
-      // console.log(e.target.files);
     }
     // else if (e.target.name === "fechaNacimiento") {
     //   setUserInput({
@@ -44,7 +43,6 @@ const RegisterPage = () => {
   //handle submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(userInput);
     const usuario = {
       id: 0,
       ...userInput,

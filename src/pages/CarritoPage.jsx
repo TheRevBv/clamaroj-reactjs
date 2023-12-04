@@ -10,7 +10,6 @@ const CarritoPage = () => {
   useEffect(() => {
     // Obtener los productos del carrito desde el Local Storage
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    console.log("storedCart", storedCart);
     setCartItems(storedCart);
   }, []);
 
@@ -19,7 +18,6 @@ const CarritoPage = () => {
     let total = 0;
     cartItems.forEach((item) => {
       const itemTotal = item.cantidad * item.precio;
-      console.log("itemTotal", itemTotal);
       total += itemTotal;
     });
 

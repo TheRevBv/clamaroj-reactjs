@@ -74,8 +74,6 @@ const Productos = () => {
     const res = await fetch("http://localhost:7092/api/Productos");
     const data = await res.json();
     setProductosApi(data);
-    console.log(data);
-    console.log("productosApi", productosApi);
   };
 
   //loading
