@@ -57,7 +57,7 @@ const Navbar = () => {
         {/* left  */}
         <div className="flex flex-grow">
           <img
-            className="w-36 cursor-pointer"
+            className="w-36 cursor-pointer logo"
             src={"https://i.ibb.co/0s3pdnc/logo2.png"}
             alt="logo"
             onClick={() => navigate("/")}

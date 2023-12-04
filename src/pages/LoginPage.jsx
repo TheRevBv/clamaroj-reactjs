@@ -73,7 +73,7 @@ const LoginPage = () => {
               to="/register"
               className="text-primary text-base text-primary text-center  hover:underline"
             >
-              No tienes una cuenta? Registrate
+              ¿No tienes una cuenta? Registrate
             </NavLink>
           </div>
 

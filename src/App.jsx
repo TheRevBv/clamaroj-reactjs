@@ -8,6 +8,7 @@ import LoginPage from "@pages/LoginPage";
 import RegisterPage from "@pages/RegisterPage";
 import Navbar from "@components/Navbar";
 import ProtectedRoutes from "@components/ProtectedRoutes";
+import Pedidos from "@pages/Pedidos";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
             <Route exact path="/home" element={<HomePage />} />
             <Route exact path="/register" element={<RegisterPage />} />
             <Route exact path="/login" element={<LoginPage />} />
+            <Route exact path="/orders" element={<Pedidos />} />
             <Route exact path="/cart" element={<ProtectedRoutes />}>
               <Route index element={<h1>Cart</h1>} />
             </Route>
