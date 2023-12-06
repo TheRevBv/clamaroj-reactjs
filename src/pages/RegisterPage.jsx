@@ -1,13 +1,15 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Brand from "@components/Brand";
 import Button from "@components/Button";
 import TextField from "@components/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { registerAsync } from "@slices/authSlice";
+import swal from "sweetalert";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [userInput, setUserInput] = useState({
     nombre: "",
@@ -45,18 +47,29 @@ const RegisterPage = () => {
     e.preventDefault();
     const usuario = {
       id: 0,
-      ...userInput,
+      nombre: userInput.nombre,
+      apellido: userInput.apellido,
+      correo: userInput.correo,
+      password: userInput.password,
+      fechaNacimiento: userInput.fechaNacimiento,
+      foto: userInput.foto,
+      idStatus: 1,
       roles: [
         {
-          id: 2,
-          nombre: "Cliente",
+          id: 2, //id del rol usuario
         },
       ],
-      idStatus: 1,
     };
 
-    console.log(usuario);
-    // dispatch(registerAsync(userInput));
+    // console.log(usuario);
+    dispatch(registerAsync(usuario));
+    swal({
+      title: "Registro exitoso",
+      text: "Ahora puedes iniciar sesión",
+      icon: "success",
+      button: "Aceptar",
+    });
+    navigate("/login");
   };
 
   //form inputs

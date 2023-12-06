@@ -6,6 +6,7 @@ import Button from "@components/Button";
 import TextField from "@components/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { loginAsync } from "@slices/authSlice";
+import swal from "sweetalert";
 
 const LoginPage = () => {
   const { user } = useSelector((state) => state.auth);
@@ -26,6 +27,11 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginAsync(userInput));
+    swal(
+      `Bienvenido ${userInput.correo}`,
+      "Iniciaste sesion correctamente",
+      "success"
+    );
     navigate("/");
   };
 
