@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BsCart2 } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from "@assets/img/logos/logo_inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@slices/authSlice";
@@ -50,12 +50,49 @@ const Navbar = () => {
             alt="logo"
             onClick={() => navigate("/")}
           />
+          <div className="flex items-center space-x-6 ml-6">
+            <Link
+              to="/"
+              className="text-slate-300 hover:text-slate-400 cursor-pointer"
+            >
+              Inicio
+            </Link>
+            <Link
+              to="/productos"
+              className="text-slate-300 hover:text-slate-400 cursor-pointer"
+            >
+              Productos
+            </Link>
+            <Link
+              to="/nosotros"
+              className="text-slate-300 hover:text-slate-400 cursor-pointer"
+            >
+              Nosotros
+            </Link>
+            <Link
+              to="/contacto"
+              className="text-slate-300 hover:text-slate-400 cursor-pointer"
+            >
+              Contacto
+            </Link>
+          </div>
         </div>
         {/* right  */}
-        {user ? (
-          <>
-            <div className="flex items-center justify-end space-x-4">
-              <div
+        <div className="flex items-center justify-end flex-row-reverse gap-6">
+          <div
+            className="relative flex cursor-pointer"
+            onClick={() => navigate("/cart")}
+          >
+            <BsCart2 className="cursor-pointer w-8 h-8 text-slate-300 hover:text-slate-400 " />
+            {cantidadEnCarrito > 0 && (
+              <span className="absolute -top-1 -right-1 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                {cantidadEnCarrito}
+              </span>
+            )}
+          </div>
+          {user ? (
+            <>
+              {/* <div
                 className="relative flex cursor-pointer"
                 onClick={() => navigate("/cart")}
               >
@@ -65,7 +102,7 @@ const Navbar = () => {
                     {cantidadEnCarrito}
                   </span>
                 )}
-              </div>
+              </div> */}
               {user.foto ? (
                 <img
                   className="w-10 h-10 rounded-full object-cover"
@@ -86,13 +123,12 @@ const Navbar = () => {
                 className="cursor-pointer w-6 h-6 text-slate-300"
                 onClick={logoutUser}
               />
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="flex items-center justify-end space-x-6">
+            </>
+          ) : (
+            <>
+              {/* <div className="flex items-center justify-end space-x-6"> */}
               <button
-                className="text-slate-300"
+                className="text-slate-300 hover:text-slate-400 cursor-pointer"
                 onClick={() => navigate("/login")}
               >
                 Login
@@ -103,9 +139,9 @@ const Navbar = () => {
               >
                 Registrarse
               </button>
-            </div>
-          </>
-        )}
+            </>
+          )}
+        </div>
       </nav>
     </header>
   );

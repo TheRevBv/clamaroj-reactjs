@@ -10,6 +10,9 @@ import Navbar from "@components/Navbar";
 import CarritoPage from "@pages/CarritoPage";
 import ProtectedRoutes from "@components/ProtectedRoutes";
 import ProductosDetails from "@pages/ProductosDetails";
+import ProductosPage from "@pages/ProductosPage";
+import ContactoPage from "@pages/ContactoPage";
+import NosotrosPage from "@pages/NosotrosPage";
 
 const App = () => {
   return (
@@ -20,14 +23,17 @@ const App = () => {
           <Routes>
             <Route index element={<HomePage />} />
             <Route exact path="/home" element={<HomePage />} />
+            <Route exact path="/productos" element={<ProductosPage />} />
+            <Route
+              exact
+              path="/productos/:idProducto"
+              element={<ProductosDetails />}
+            />
+            <Route exact path="/nosotros" element={<NosotrosPage />} />
+            <Route exact path="/contacto" element={<ContactoPage />} />
             <Route element={<ProtectedRoutes />}>
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
-              <Route
-                exact
-                path="/productos/:idProducto"
-                element={<ProductosDetails />}
-              />
               <Route exact path="/cart" element={<CarritoPage />} />
             </Route>
             <Route path="*" element={<ErrorPage />} />

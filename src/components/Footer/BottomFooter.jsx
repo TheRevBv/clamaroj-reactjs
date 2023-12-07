@@ -1,14 +1,25 @@
 const BottomFooter = () => {
   return (
     <div className="flex items-center pt-8">
-      <div className="flex flex-grow">
-        <span className="text-gray-500">Developed by Joshua Morin</span>
+      <div className="flex flex-grow gap-4 items-center">
+        <span className="text-gray-500">Desarrollado por </span>
+        <a
+          className="text-primary hover:text-primary-dark"
+          href="https://github.com/TheRevBv/Clamaroj-Reactjs"
+          target="_blank"
+          rel="noreferrer"
+        >
+          TheRevBv
+        </a>
       </div>
 
       <div className="flex justify-end items-center space-x-6">
-        <span className="text-white cursor-pointer">Privacy Policy</span>
-        <span className="text-white cursor-pointer">Terms of Use</span>
-        <span className="text-white cursor-pointer">Pricing</span>
+        <span className="text-white cursor-pointer">
+          Política de Privacidad
+        </span>
+        <span className="text-white cursor-pointer">
+          Términos y Condiciones
+        </span>
       </div>
     </div>
   );
