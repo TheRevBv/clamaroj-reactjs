@@ -1,9 +1,14 @@
 {
   "name": "clamaroj-react",
   "private": true,
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": ""      
+    }
+  ],
   "version": "0.0.0",
   "description": "A React project",
-  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",

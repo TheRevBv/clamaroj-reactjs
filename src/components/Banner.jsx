@@ -1,24 +1,18 @@
+import { FaSearch } from "react-icons/fa";
+
 const Banner = () => {
   return (
     <section className="header-banner h-96 w-full">
       <div className="flex flex-col items-center justify-center h-full">
-        {/* Agregar un fondo blur para mostrar el texto  */}
-        <div className="bg-white bg-opacity-0 backdrop-filter backdrop-blur-sm rounded-lg p-8">
-          <h1 className="text-8xl font-bold text-center text-secondary mb-4 uppercase">
-            Las mejores micheladas y cocteles
-          </h1>
-          {/* <p className="text-center text-gray-800 mb-8">
-            Encuentra los mejores cursos en línea
-          </p> */}
-        </div>
-        <div className="rounded-full p-1 box-border mt-8 bg-white overflow-hidden ring-red-300 focus:ring-4 w-96 flex items-center">
+        {/* Agrega input para busqueda de productos */}
+        <div className="flex bg-white rounded-full w-3/4">
           <input
             type="text"
-            className=" rounded-full px-4 focus:outline-none w-full bg-transparent"
-            placeholder="Buscar aquí..."
+            placeholder="Buscar..."
+            className="bg-transparent outline-none p-4 w-full"
           />
-          <button className="text-sm bg-primary py-3 px-6 rounded-full text-white poppins ring-red-300 focus:ring-4 transition duration-300 hover:scale-105 transform">
-            Buscar...
+          <button className="bg-primary text-white font-bold rounded-full flex items-center justify-center px-8 py-2">
+            <FaSearch />
           </button>
         </div>
       </div>

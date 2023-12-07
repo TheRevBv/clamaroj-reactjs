@@ -12,6 +12,9 @@ import {
 } from "redux-persist";
 import authReducer from "@slices/authSlice";
 
+import productosReducer from "@slices/productosSlice";
+import carritoReducer from "@slices/carritoSlice";
+
 const persistConfig = {
   key: "root",
   version: 1,
@@ -23,6 +26,8 @@ const persistedReducer = persistReducer(persistConfig, authReducer);
 const store = configureStore({
   reducer: {
     auth: persistedReducer,
+    carrito: carritoReducer,
+    productos: productosReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

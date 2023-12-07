@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  @apply antialiased h-full;
+}
+
 @layer components {
   .menu_tab {
     @apply text-gray-800 cursor-pointer select-none;

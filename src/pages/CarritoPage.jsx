@@ -1,82 +1,82 @@
-import Banner from "@components/Banner";
 import CartCard from "@components/CartCard";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { MdPayments } from "react-icons/md";
+import { TbShoppingCartOff } from "react-icons/tb";
 import Footer from "@components/Footer/Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { calculateTotal } from "@utils/helpers";
+import { useNavigate } from "react-router-dom";
+import { getCarrito } from "@slices/carritoSlice";
 
 const CarritoPage = () => {
-  const [cartItems, setCartItems] = useState([]);
-  //const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const cartItems = useSelector((state) => state.carrito.productos);
+  const [items, setItems] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Obtener los productos del carrito desde el Local Storage
-    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    setCartItems(storedCart);
+    setLoading(true);
+    dispatch(getCarrito());
+    setLoading(false);
+  }, [dispatch]);
+
+  const handleCheckout = useCallback(() => {
+    if (cartItems.length === 0) return;
+
+    navigate("/checkout");
   }, []);
-
-  // funcion para calcular el total
-  const calculateTotal = () => {
-    let total = 0;
-    cartItems.forEach((item) => {
-      const itemTotal = item.cantidad * item.precio;
-      total += itemTotal;
-    });
-
-    return total;
-  };
 
   return (
     <>
-      {/* <Banner /> */}
-      <section className="my-12 max-w-screen-xl mx-auto px-6 py-28">
-        <div className="container mx-auto">
-          {
-            /* Si el carrito está vacío, mostrar un mensaje */
-            cartItems.length === 0 ? (
-              <>
-                <div>
-                  <img
-                    src="https://paisajesespanoles.es/images/emptycart.png"
-                    alt="carrito vacio"
-                    className="mx-auto"
-                  />
+      {/* <Banner title="Carrito de compras" /> */}
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="h-96 w-2/3">
+          <div className="container mx-auto px-4 h-full">
+            <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0 h-full">
+              <div className="lg:w-3/4 h-full">
+                <div className="flex flex-col space-y-4">
+                  {cartItems.length === 0 ? (
+                    <div className="bg-white shadow-md px-4 py-10 flex flex-col items-center justify-center gap-4">
+                      <h2 className="text-2xl font-semibold">
+                        No hay productos en el carrito
+                      </h2>
+                      <TbShoppingCartOff className="mx-auto font-semibold text-9xl text-gray-300" />
+                    </div>
+                  ) : (
+                    cartItems.map((producto) => (
+                      // <h2 key={producto.idProducto}>{producto.nombre}</h2>
+                      <CartCard key={producto.idProducto} producto={producto} />
+                    ))
+                  )}
+                  {/* {cartItems.map((producto) => (
+                <CartCard key={producto.idProducto} producto={producto} />
+              ))} */}
                 </div>
-                <div className="bg-white p-4 rounded-md text-center">
-                  <h2 className="text-xl font-semibold mb-4">Carrito Vacío</h2>
-                  <p className="text-gray-700 mb-2">
-                    No tienes productos en tu carrito de compras.
-                  </p>
-                </div>
-              </>
-            ) : (
-              // Si el carrito tiene productos, mostrar el listado
-              <div className="grid grid-cols-2 gap-8">
-                {/* Primera columna: Lista de tarjetas de productos */}
-                <div className="overflow-y-auto max-h-80">
-                  {cartItems.map((product, index) => (
-                    <CartCard key={index} product={product} />
-                  ))}
-                </div>
-                {/* Segunda columna: Resumen del carrito */}
-                <div className="bg-white p-4 rounded-md">
-                  <h2 className="text-xl font-semibold mb-4">
-                    Resumen del Carrito
-                  </h2>
-                  <p className="text-gray-700 mb-2">
-                    Cantidad de Artículos: <strong>{cartItems.length}</strong>
-                  </p>
-                  <p className="text-gray-700 mb-4">
-                    Total a Pagar: <strong> ${calculateTotal()}</strong>
-                  </p>
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full flex items-center mx-auto">
-                    Realizar Pedido <MdPayments className="ml-3" />
+              </div>
+              <div className="lg:w-1/4 lg:sticky lg:top-0 h-full bg-white shadow-md p-4 flex items-start rounded-md flex-col space-y-4">
+                <div className="w-full">
+                  <h2 className="text-2xl font-semibold">Resumen</h2>
+                  <div className="flex justify-between mt-4">
+                    <span className="text-lg">Total</span>
+                    <span className="text-lg font-semibold">
+                      ${total.toFixed(2)}
+                    </span>
+                  </div>
+                  <button
+                    className="bg-primary text-white w-full py-2 mt-4"
+                    onClick={handleCheckout}
+                  >
+                    <MdPayments className="inline-block mr-2" />
+                    Pagar
                   </button>
                 </div>
               </div>
-            )
-          }
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
       <Footer />
     </>
   );

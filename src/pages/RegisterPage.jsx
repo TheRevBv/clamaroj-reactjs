@@ -61,7 +61,6 @@ const RegisterPage = () => {
       ],
     };
 
-    // console.log(usuario);
     dispatch(registerAsync(usuario));
     swal({
       title: "Registro exitoso",

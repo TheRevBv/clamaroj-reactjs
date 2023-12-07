@@ -14,22 +14,8 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
-  // Estado para almacenar la cantidad de artículos en el carrito
-  const [cantidadEnCarrito, setCantidadEnCarrito] = useState(0);
-
-  //   const { order } = useOrder();
-
-  useEffect(() => {
-    // Obtener la cantidad de artículos del localStorage
-    const carrito = localStorage.getItem("cart");
-    const cantidadAlmacenada = JSON.parse(carrito)?.length;
-    // Actualizar el estado si hay una cantidad almacenada
-    if (cantidadAlmacenada) {
-      setCantidadEnCarrito(Number(cantidadAlmacenada));
-    } else {
-      setCantidadEnCarrito(0);
-    }
-  }, [cantidadEnCarrito]); // El segundo parámetro [] asegura que useEffect se ejecute solo una vez al montar el componente
+  const carrito = useSelector((state) => state.carrito.productos);
+  const cantidadEnCarrito = carrito.length;
 
   const logoutUser = () => {
     dispatch(logout());

@@ -1,195 +1,155 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Banner from "../components/Banner";
-import { FaBagShopping } from "react-icons/fa6";
-import { TbShoppingCartCheck } from "react-icons/tb";
+import { useDispatch, useSelector } from "react-redux";
+import { FaShoppingBag } from "react-icons/fa";
+import { addProducto } from "@slices/carritoSlice";
+import { getProductosById } from "@slices/productosSlice";
+import Footer from "@components/Footer/Footer";
+import Banner from "@components/Banner";
 import swal from "sweetalert";
-import Footer from "../components/Footer/Footer";
 
 const ProductosDetails = () => {
-  const [product, setProduct] = useState({});
   const { idProducto } = useParams();
-  const [productAdded, setProductAdded] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [quantity, setQuantity] = useState(1); // Nuevo estado para la cantidad
-  const [cantidadEnCarrito, setCantidadEnCarrito] = useState(0); // Nuevo estado para la cantidad en el carrito
-
-  const getProductId = useCallback(async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:7092/api/Productos/${idProducto}`
-      );
-      if (!response.ok) {
-        throw new Error("Error al obtener el producto");
-      }
-      const data = await response.json();
-
-      if (!Array.isArray(data)) {
-        setProduct(data);
-      } else {
-        throw new Error("Producto no encontrado");
-      }
-    } catch (error) {
-      console.error("Error al obtener el producto:", error.message);
-      /*Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "No se pudo obtener el producto",
-      });*/
-      alert("No se pudo obtener el producto");
-      navigate("/"); // Redirecciona a la página principal en caso de error
-    }
-  }, [idProducto]);
-  /*
-    const getProductId =()=>{
-       let api = `http://localhost:7092/api/Productos/${idProducto}`;
-    }*/
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const carrito = useSelector((state) => state.carrito.productos);
+  const producto = useSelector((state) => state.productos.producto);
 
   useEffect(() => {
-    getProductId();
-  }, [idProducto]);
-  // Luego, agregar un nuevo useEffect para llamar a isAdded después de que product se actualiza
-  useEffect(() => {
-    isAdded();
-  }, [product]);
+    setLoading(true);
+    dispatch(getProductosById(idProducto));
+    setLoading(false);
+  }, [dispatch, idProducto]);
 
-  //Añadir articulo al local storage
-  //Añadir articulo al local storage
-  const addProduct = () => {
-    removeProduct();
-    //Verificar si la caantidad es diferente a la cantidad en el carrito
-    if (cantidadEnCarrito !== quantity) {
-      //Si es diferente, actualizar la cantidad en el carrito
-      setCantidadEnCarrito(quantity);
-    }
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push({ ...product, cantidad: quantity });
-    setProductAdded(true);
-    // Actualizar el localStorage y el estado de cantidadEnCarrito
-    localStorage.setItem("cart", JSON.stringify(cart));
-    swal("Producto agregado al carrito", "", "success");
-  };
+  const handleAddToCart = useCallback(() => {
+    if (!producto && !idProducto) return;
 
-  const removeProduct = () => {
-    setProductAdded(false);
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    // Encontrar la posición del producto en el carrito por idProducto
-    const index = cart.findIndex(
-      (item) => item.idProducto === product.idProducto
+    const productoExist = carrito.find(
+      (producto) => producto.idProducto === Number(idProducto)
     );
 
-    if (index > -1) {
-      // Si el producto está en el carrito, eliminarlo en esa posición
-      cart.splice(index, 1);
-
-      // Actualizar el localStorage y el estado de cantidadEnCarrito
-      localStorage.setItem("cart", JSON.stringify(cart));
-      //setCantidadEnCarrito((prevCantidad) => Math.max(0, prevCantidad - 1));
-      swal("Producto eliminado del carrito", "", "success");
-    }
-  };
-
-  const handleIncrement = () => {
-    setQuantity(quantity + 1);
-  };
-
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  //Funcion para saber si ha añadido este producto o no
-  const isAdded = () => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const index = cart.findIndex(
-      (item) => item.idProducto === product.idProducto
-    );
-    if (index > -1) {
-      let cantidadArticulos = cart[index].cantidad;
-      setCantidadEnCarrito(cantidadArticulos);
-      setProductAdded(true);
+    if (productoExist) {
+      swal({
+        title: "El producto ya está en el carrito",
+        text: "¿Deseas agregar más?",
+        icon: "warning",
+        buttons: ["Cancelar", "Agregar"],
+        dangerMode: true,
+      }).then((willAdd) => {
+        if (willAdd) {
+          dispatch(
+            addProducto({
+              idProducto: producto.idProducto,
+              nombre: producto.nombre,
+              precio: producto.precio,
+              foto: producto.foto,
+              descripcion: producto.descripcion,
+              cantidad: quantity,
+            })
+          );
+          swal("El producto ha sido agregado", {
+            icon: "success",
+          });
+        } else {
+          swal("El producto no ha sido agregado");
+        }
+      });
     } else {
-      setCantidadEnCarrito(0);
-      setProductAdded(false);
+      dispatch(
+        addProducto({
+          idProducto: producto.idProducto,
+          nombre: producto.nombre,
+          precio: producto.precio,
+          foto: producto.foto,
+          descripcion: producto.descripcion,
+          cantidad: quantity,
+        })
+      );
+      swal("El producto ha sido agregado", {
+        icon: "success",
+      });
     }
+  }, [dispatch, idProducto, quantity, carrito, producto]);
+
+  const handleQuantity = (type) => {
+    if (type === "add") {
+      setQuantity(quantity + 1);
+    } else {
+      if (quantity > 1) {
+        setQuantity(quantity - 1);
+      }
+    }
+  };
+
+  const handleRoute = () => {
+    navigate("/");
   };
 
   return (
     <>
-      {/* <Banner /> */}
-      <section className="my-12 w-full max-w-screen-xl mx-auto px-6 py-28">
-        <div className="container mx-auto px-4 h-full">
-          <div className="flex flex-wrap">
-            {/* Columna 1 */}
-            <div className="w-full sm:w-1/2 p-4">
-              <img
-                src={
-                  product.foto == `${product.nombre}.png`
-                    ? `/src/assets/img/productos/${product.foto}`
-                    : product.foto
-                }
-                alt={`Product Image ${product.idProducto + 1}`}
-                className="mx-auto object-cover h-96"
-              />
-            </div>
-
-            {/* Columna 2 */}
-            <div className="w-full sm:w-1/2 p-4">
-              <h1 className="text-3xl font-semibold mb-4 text-center uppercase text-primary">
-                {product.nombre}
-              </h1>
-              <h2 className="card-text text-center">{product.descripcion}</h2>
-              <h2 className="text-lg font-semibold mb-4 text-center">
-                Precio:<strong> ${product.precio}</strong>
-              </h2>
-              <h2 className="text-lg font-semibold mb-4">
-                Código: <strong>{product.codigo}</strong>
-              </h2>
-              <div className="flex flex-col items-center justify-center">
-                <div className="flex items-center justify-center space-x-4">
-                  <button
-                    className="bg-primary text-white font-bold py-2 px-4 rounded-full"
-                    onClick={handleDecrement}
-                  >
-                    {"-"}
-                  </button>
-                  <p className="text-lg font-semibold">{quantity}</p>
-                  <button
-                    className="bg-primary text-white font-bold py-2 px-4 rounded-full"
-                    onClick={handleIncrement}
-                  >
-                    {"+"}
-                  </button>
-                </div>
-                <div className="flex w-full justify-center">
-                  <button
-                    className="bg-primary text-white font-bold rounded-full flex items-center justify-center mt-4 w-full py-2 px-4 my-4"
-                    onClick={() => {
-                      addProduct();
-                    }}
-                  >
-                    Agregar <FaBagShopping className="ml-4" />
-                  </button>
-                </div>
+      {/* <Banner title={producto.nombre} /> */}
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="w-full">
+          <section className="my-12 max-w-screen-xl mx-auto px-6">
+            <div className="flex flex-col md:flex-row md:space-x-4">
+              <div className="md:w-1/2">
+                <img
+                  className="w-full mx-auto transform transition duration-300 hover:scale-105"
+                  src={
+                    producto.foto == `${producto.nombre}.png`
+                      ? `/src/assets/img/productos/${producto.foto}`
+                      : producto.foto
+                  }
+                  alt={producto.nombre}
+                />
               </div>
-              {productAdded ? (
+              <div className="md:w-1/2">
+                <h2 className="text-2xl font-semibold mb-2">
+                  {producto.nombre}
+                </h2>
+                <p className="text-sm text-gray-500 mb-4">
+                  {producto.descripcion}
+                </p>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center">
+                    <button
+                      className="bg-primary text-white px-4 py-2 rounded-full"
+                      onClick={() => handleQuantity("remove")}
+                    >
+                      -
+                    </button>
+                    <span className="mx-2">{quantity}</span>
+                    <button
+                      className="bg-primary text-white px-4 py-2 rounded-full"
+                      onClick={() => handleQuantity("add")}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <p className="text-2xl font-semibold">
+                    ${producto.precio * quantity}
+                  </p>
+                </div>
                 <button
-                  className="bg-primary text-white font-bold rounded-full flex items-center justify-center mt-4 w-full py-2 px-4 my-4"
-                  onClick={() => {
-                    removeProduct();
-                  }}
+                  className="bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center space-x-2 mb-4"
+                  onClick={handleAddToCart}
                 >
-                  Quitar <TbShoppingCartCheck className="ml-4" />
+                  <FaShoppingBag />
+                  <span>Agregar al carrito</span>
                 </button>
-              ) : (
-                ""
-              )}
+                <button
+                  className="bg-primary text-white px-4 py-2 rounded-full flex items-center justify-center space-x-2"
+                  onClick={handleRoute}
+                >
+                  <span>Regresar</span>
+                </button>
+              </div>
             </div>
-          </div>
+          </section>
         </div>
-      </section>
+      </div>
       <Footer />
     </>
   );

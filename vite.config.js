@@ -21,6 +21,7 @@ export default defineConfig({
       "@layouts": "/src/layouts",
       "@models": "/src/models",
       "@context": "/src/context",
+      "@utils": "/src/utils",
     },
   },
 });

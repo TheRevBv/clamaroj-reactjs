@@ -20,7 +20,7 @@
 /* Estilos componentes */
 
 body {
-  @apply bg-gray-50 m-0 font-poppins scroll-smooth antialiased overflow-x-hidden;
+  @apply bg-gray-50 m-0 font-poppins scroll-smooth antialiased overflow-x-hidden overflow-y-auto;
 }
 
 .orderContainer::-webkit-scrollbar,
