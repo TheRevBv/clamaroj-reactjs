@@ -4,6 +4,7 @@ import Banner from "../components/Banner";
 import { FaBagShopping } from "react-icons/fa6";
 import { TbShoppingCartCheck } from "react-icons/tb";
 import swal from "sweetalert";
+import Footer from "../components/Footer/Footer";
 
 const ProductosDetails = () => {
   const [product, setProduct] = useState({});
@@ -55,7 +56,7 @@ const ProductosDetails = () => {
   //Añadir articulo al local storage
   //Añadir articulo al local storage
   const addProduct = () => {
-    // removeProduct();
+    removeProduct();
     //Verificar si la caantidad es diferente a la cantidad en el carrito
     if (cantidadEnCarrito !== quantity) {
       //Si es diferente, actualizar la cantidad en el carrito
@@ -118,72 +119,74 @@ const ProductosDetails = () => {
   return (
     <>
       <Banner />
+      <section className="my-12 max-w-screen-xl mx-auto px-6">
+        <div className="container mx-auto">
+          <div className="flex flex-wrap">
+            {/* Columna 1 */}
+            <div className="w-full sm:w-1/2 p-4">
+              <img
+                src={`/src/assets/${product.foto}`}
+                alt={`Product Image ${product.idProducto + 1}`}
+                className="mx-auto object-cover h-96"
+              />
+            </div>
 
-      <div className="container mx-auto">
-        <div className="flex flex-wrap">
-          {/* Columna 1 */}
-          <div className="w-full sm:w-1/2 p-4">
-            <img
-              src={`/src/assets/${product.foto}`}
-              alt={`Product Image ${product.idProducto + 1}`}
-              className="mx-auto object-cover h-96"
-            />
-          </div>
-
-          {/* Columna 2 */}
-          <div className="w-full sm:w-1/2 p-4">
-            <h1 className="text-3xl font-semibold mb-4 text-center uppercase text-primary">
-              {product.nombre}
-            </h1>
-            <h2 className="card-text text-center">{product.descripcion}</h2>
-            <h2 className="text-lg font-semibold mb-4 text-center">
-              Precio:<strong> ${product.precio}</strong>
-            </h2>
-            <h2 className="text-lg font-semibold mb-4">
-              Código: <strong>{product.codigo}</strong>
-            </h2>
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex items-center justify-center space-x-4">
-                <button
-                  className="bg-primary text-white font-bold py-2 px-4 rounded-full"
-                  onClick={handleDecrement}
-                >
-                  {"-"}
-                </button>
-                <p className="text-lg font-semibold">{quantity}</p>
-                <button
-                  className="bg-primary text-white font-bold py-2 px-4 rounded-full"
-                  onClick={handleIncrement}
-                >
-                  {"+"}
-                </button>
+            {/* Columna 2 */}
+            <div className="w-full sm:w-1/2 p-4">
+              <h1 className="text-3xl font-semibold mb-4 text-center uppercase text-primary">
+                {product.nombre}
+              </h1>
+              <h2 className="card-text text-center">{product.descripcion}</h2>
+              <h2 className="text-lg font-semibold mb-4 text-center">
+                Precio:<strong> ${product.precio}</strong>
+              </h2>
+              <h2 className="text-lg font-semibold mb-4">
+                Código: <strong>{product.codigo}</strong>
+              </h2>
+              <div className="flex flex-col items-center justify-center">
+                <div className="flex items-center justify-center space-x-4">
+                  <button
+                    className="bg-primary text-white font-bold py-2 px-4 rounded-full"
+                    onClick={handleDecrement}
+                  >
+                    {"-"}
+                  </button>
+                  <p className="text-lg font-semibold">{quantity}</p>
+                  <button
+                    className="bg-primary text-white font-bold py-2 px-4 rounded-full"
+                    onClick={handleIncrement}
+                  >
+                    {"+"}
+                  </button>
+                </div>
+                <div className="flex w-full justify-center">
+                  <button
+                    className="bg-primary text-white font-bold rounded-full flex items-center justify-center mt-4 w-full py-2 px-4 my-4"
+                    onClick={() => {
+                      addProduct();
+                    }}
+                  >
+                    Agregar <FaBagShopping className="ml-4" />
+                  </button>
+                </div>
               </div>
-              <div className="flex w-full justify-center">
+              {productAdded ? (
                 <button
                   className="bg-primary text-white font-bold rounded-full flex items-center justify-center mt-4 w-full py-2 px-4 my-4"
                   onClick={() => {
-                    addProduct();
+                    removeProduct();
                   }}
                 >
-                  Agregar <FaBagShopping className="ml-4" />
+                  Quitar <TbShoppingCartCheck className="ml-4" />
                 </button>
-              </div>
+              ) : (
+                ""
+              )}
             </div>
-            {productAdded ? (
-              <button
-                className="bg-primary text-white font-bold rounded-full flex items-center justify-center mt-4 w-full py-2 px-4 my-4"
-                onClick={() => {
-                  removeProduct();
-                }}
-              >
-                Quitar <TbShoppingCartCheck className="ml-4" />
-              </button>
-            ) : (
-              ""
-            )}
           </div>
         </div>
-      </div>
+      </section>
+      <Footer />
     </>
   );
 };
