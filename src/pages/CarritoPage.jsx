@@ -27,8 +27,8 @@ const CarritoPage = () => {
 
   return (
     <>
-      <Banner />
-      <section className="my-12 max-w-screen-xl mx-auto px-6">
+      {/* <Banner /> */}
+      <section className="my-12 max-w-screen-xl mx-auto px-6 py-28">
         <div className="container mx-auto">
           {
             /* Si el carrito está vacío, mostrar un mensaje */
@@ -58,21 +58,19 @@ const CarritoPage = () => {
                   ))}
                 </div>
                 {/* Segunda columna: Resumen del carrito */}
-                <div>
-                  <div className="bg-white p-4 rounded-md">
-                    <h2 className="text-xl font-semibold mb-4">
-                      Resumen del Carrito
-                    </h2>
-                    <p className="text-gray-700 mb-2">
-                      Cantidad de Artículos: <strong>{cartItems.length}</strong>
-                    </p>
-                    <p className="text-gray-700 mb-4">
-                      Total a Pagar: <strong> ${calculateTotal()}</strong>
-                    </p>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full flex items-center mx-auto">
-                      Realizar Pedido <MdPayments className="ml-3" />
-                    </button>
-                  </div>
+                <div className="bg-white p-4 rounded-md">
+                  <h2 className="text-xl font-semibold mb-4">
+                    Resumen del Carrito
+                  </h2>
+                  <p className="text-gray-700 mb-2">
+                    Cantidad de Artículos: <strong>{cartItems.length}</strong>
+                  </p>
+                  <p className="text-gray-700 mb-4">
+                    Total a Pagar: <strong> ${calculateTotal()}</strong>
+                  </p>
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full flex items-center mx-auto">
+                    Realizar Pedido <MdPayments className="ml-3" />
+                  </button>
                 </div>
               </div>
             )

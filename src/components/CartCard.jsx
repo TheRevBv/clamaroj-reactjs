@@ -3,13 +3,13 @@ import React from "react";
 /*Se hizo otro componente para dividirlo */
 const CartCard = ({ product }) => {
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl overflow-hidden md:max-w-2xl my-4">
+    <div className="max-w-md mx-auto bg-white rounded-xl overflow-hidden md:max-w-2xl">
       <div className="md:flex">
         {/* Imagen a la izquierda */}
         <div className="md:flex-shrink-0">
           <img
             className="h-48 w-full object-cover md:w-48"
-            src={`/src/assets/${product.foto}`}
+            src={`/src/assets/img/productos/${product.foto}`}
             alt={product.nombre}
           />
         </div>

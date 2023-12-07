@@ -118,14 +118,18 @@ const ProductosDetails = () => {
 
   return (
     <>
-      <Banner />
-      <section className="my-12 max-w-screen-xl mx-auto px-6">
-        <div className="container mx-auto">
+      {/* <Banner /> */}
+      <section className="my-12 w-full max-w-screen-xl mx-auto px-6 py-28">
+        <div className="container mx-auto px-4 h-full">
           <div className="flex flex-wrap">
             {/* Columna 1 */}
             <div className="w-full sm:w-1/2 p-4">
               <img
-                src={`/src/assets/${product.foto}`}
+                src={
+                  product.foto == `${product.nombre}.png`
+                    ? `/src/assets/img/productos/${product.foto}`
+                    : product.foto
+                }
                 alt={`Product Image ${product.idProducto + 1}`}
                 className="mx-auto object-cover h-96"
               />
