@@ -1,6 +1,17 @@
 const Banner = () => {
+  const sectionStyle = {
+    /*background: "url(../src/assets/banner.png)",
+    backgroundPosition: "center",
+    backgroundSize: "cover", // Hace que la imagen se ajuste al tamaño del contenedor
+    backgroundRepeat: "no-repeat", // Evita la repetición de la imagen de fondo
+    /*background con imagen */
+
+    background:
+      "linear-gradient(157deg, rgba(8,33,53,1) 35%, rgba(8,50,77,1) 67%, rgba(3,36,60,1) 79%)",
+  };
+
   return (
-    <section className="header-banner h-96 w-full">
+    <section className="header-banner h-96 w-full" style={sectionStyle}>
       <div className="flex flex-col items-center justify-center h-full">
         {/* Agregar un fondo blur para mostrar el texto  */}
         <div className="bg-white bg-opacity-0 backdrop-filter backdrop-blur-sm rounded-lg p-8">

@@ -6,7 +6,7 @@ import logo from "@assets/img/logos/logo_inicio.png";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "@slices/authSlice";
 import { persistor } from "@app/store";
-// import { FaCartShopping } from "react-icons/fa6";
+import { FaRegClipboard } from "react-icons/fa";
 
 const Navbar = () => {
   const [changeHeader, setChangeHeader] = useState(false);
@@ -80,6 +80,12 @@ const Navbar = () => {
                   </span>
                 )}
               </div>
+              <div
+                className="relative flex cursor-pointer"
+                onClick={() => navigate("/orders")}
+              >
+                <FaRegClipboard className="cursor-pointer w-8 h-8 text-slate-300 hover:text-slate-400 " />
+              </div>
               {user.foto ? (
                 <img
                   className="w-10 h-10 rounded-full object-cover"
@@ -105,6 +111,18 @@ const Navbar = () => {
         ) : (
           <>
             <div className="flex items-center justify-end space-x-6">
+            <button
+                className="text-slate-300"
+                onClick={() => navigate("/informacion")}
+              >
+                ¿Quienes Somos?
+              </button>
+              <button
+                className="text-slate-300"
+                onClick={() => navigate("/contacto")}
+              >
+                Contacto
+              </button>
               <button
                 className="text-slate-300"
                 onClick={() => navigate("/login")}

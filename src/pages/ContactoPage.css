@@ -1,0 +1,228 @@
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4f7eff;
+  }
+  
+  .content {
+    font-size: 20px;
+    padding: 20px;
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+    background-color: #001f3f;
+    border-radius: 15px;
+  }
+  .contact-red {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    border-radius: 15px;
+  }
+  
+  .contact-red h2 {
+    color: #0471ff;
+    font-size: 35px;
+  }
+  
+  .contact-red p {
+    margin-bottom: 15px;
+    color: #555;
+  }
+  
+  .contact-form {
+    width: 50%;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button.submit-btn {
+    background-color: #ff1168;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.submit-btn:hover {
+    background-color: #00a2ff;
+  }
+  
+  .social-media {
+    margin-top: 20px;
+  }
+  
+  .social-icons {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .social-icons li {
+    margin-right: 20px;
+  }
+  
+  .social-icons a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .social-icons a img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  
+  .social-icons a:hover {
+    background-color: #8f8f8f;
+  }
+  
+  .contact-image img {
+    width: 100%;
+    border-radius: 10px; /* Agregué bordes redondeados a la imagen */
+    margin-top: 20px; /* Ajusté el espaciado superior de la imagen */
+  }
+  
+  .content {
+    font-size: 25px; /* Texto más grande */
+    padding: 20px;
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .contact-info h2 {
+    color: #11cfff;
+    font-size: 35px;
+    margin-bottom: 10px; 
+  }
+  
+  .contact-info p {
+    margin-bottom: 15px;
+    color: #050101; /* Texto gris claro */
+  }
+  
+  .contact-info ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .contact-info li {
+    font-size: 35px; /* Texto más grande */
+    margin-bottom: 10px; /* Espaciado inferior */
+  }
+  
+  .social-media {
+    margin-top: 20px;
+  }
+  
+  .social-icons {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .social-icons li {
+    margin-right: 20px;
+  }
+  
+  .social-icons a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 40px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .social-icons a img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  
+  .social-icons a:hover {
+    background-color: #643cf3;
+  }
+  
+  .form-container {
+    background-color: #001f3f; /* Azul marino */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: flex;
+    align-items: center;
+    color: #fff; /* Color de texto blanco */
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
