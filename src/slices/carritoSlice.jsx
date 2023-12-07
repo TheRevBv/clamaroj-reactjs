@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { calculateTotal } from "@utils/helpers";
 
 // {
 //     "idProducto": 1,

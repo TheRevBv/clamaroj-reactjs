@@ -2,10 +2,11 @@ import { useState, useEffect, useCallback } from "react";
 import { removeProducto, addProducto, getCarrito } from "@slices/carritoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { calculateTotal, calculateTotalItems } from "@utils/helpers";
 import swal from "sweetalert";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 
-const CartCard = ({ producto }) => {
+const CartCard = ({ producto, setTotal, setItemsCarrito, setArticulos }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(producto.cantidad);
@@ -19,8 +20,16 @@ const CartCard = ({ producto }) => {
     cantidad: "",
   });
 
-  console.log(producto);
-  console.log(quantity);
+  useEffect(() => {
+    setLoading(true);
+    setArticulos(carrito.length);
+    setTotal(calculateTotal(carrito));
+    setItemsCarrito(calculateTotalItems(carrito));
+    setLoading(false);
+  }, [carrito]);
+
+  // console.log(producto);
+  // console.log(quantity);
 
   const handleRemoveFromCart = (producto) => {
     swal({
@@ -67,6 +76,9 @@ const CartCard = ({ producto }) => {
         }
       }
       handleAddToCart();
+      // setTotal(calculateTotal(carrito));
+      // setItemsCarrito(calculateTotalItems(carrito));
+      // setArticulos(carrito.length);
     },
     [quantity, producto]
   );
@@ -116,11 +128,11 @@ const CartCard = ({ producto }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <div className="w-full">
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center transform transition-all duration-500 hover:scale-105">
           {/* {productos.map((producto) => ( */}
           <div
             key={producto.idProducto}
-            className="flex flex-row items-center justify-between w-full border-b-2 border-gray-200 py-4"
+            className="flex flex-row items-center justify-between w-full border-b-2 border-gray-200 p-4 bg-white rounded-md shadow-md"
           >
             <div className="flex flex-row items-center justify-start space-x-4">
               <img
