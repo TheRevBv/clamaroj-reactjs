@@ -12,6 +12,7 @@ const CarritoPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.productos);
+  const total2 = useSelector((state) => state.carrito.productos);
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -21,6 +22,29 @@ const CarritoPage = () => {
     dispatch(getCarrito());
     setLoading(false);
   }, [dispatch]);
+
+  //Funcion para sacar el carro del localstorage
+  const getCarritoLocal = () => {
+    let carritoLocal = localStorage.getItem("carrito");
+
+    if (carritoLocal) {
+      //Convertir a objeto y luego cambiar a array
+      const carritoArray = Object.values(JSON.parse(carritoLocal));
+      //Sacamos el total
+      let totalArray = 0;
+      carritoArray.forEach((producto) => {
+        totalArray += producto.precio * producto.cantidad;
+      });
+      setTotal(totalArray);
+      setItems(carritoArray);
+    } else {
+      setTotal(0);
+    }
+  };
+
+  useEffect(() => {
+    getCarritoLocal();
+  }, []);
 
   const handleCheckout = useCallback(() => {
     if (cartItems.length === 0) return;
@@ -45,9 +69,9 @@ const CarritoPage = () => {
                       <TbShoppingCartOff className="mx-auto font-semibold text-9xl text-gray-300" />
                     </div>
                   ) : (
-                    cartItems.map((producto) => (
+                    items.map((producto) => (
                       // <h2 key={producto.idProducto}>{producto.nombre}</h2>
-                      <CartCard key={producto.idProducto} producto={producto} />
+                      <CartCard key={producto.idProducto} producto={producto} funcionRefrescarCarrito={getCarritoLocal} />
                     ))
                   )}
                   {/* {cartItems.map((producto) => (
