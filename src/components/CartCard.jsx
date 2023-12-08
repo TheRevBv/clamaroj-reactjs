@@ -1,16 +1,21 @@
 import { useState, useEffect, useCallback } from "react";
-import { removeProducto, addProducto, getCarrito } from "@slices/carritoSlice";
+import {
+  removeProducto,
+  addProducto,
+  addCantidadNueva,
+} from "@slices/carritoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { FaTrash, FaPlus, FaMinus } from "react-icons/fa";
 
-const CartCard = ({ producto }) => {
+const CartCard = ({ producto, funcionRefrescarCarrito }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(producto.cantidad);
   const [loading, setLoading] = useState(false);
   const carrito = useSelector((state) => state.carrito.productos);
+
   const [product, setProduct] = useState({
     idProducto: "",
     nombre: "",
@@ -18,9 +23,6 @@ const CartCard = ({ producto }) => {
     precio: "",
     cantidad: "",
   });
-
-  console.log(producto);
-  console.log(quantity);
 
   const handleRemoveFromCart = (producto) => {
     swal({
@@ -35,6 +37,7 @@ const CartCard = ({ producto }) => {
         swal("El producto ha sido eliminado", {
           icon: "success",
         });
+        funcionRefrescarCarrito();
       } else {
         swal("El producto no ha sido eliminado");
       }
@@ -43,30 +46,44 @@ const CartCard = ({ producto }) => {
 
   const handleQuantity = useCallback(
     (type, producto) => {
+      let ProductoMandado = {};
+
       if (type === "add") {
         setQuantity(quantity + 1);
-        setProduct({
+        ProductoMandado = {
           idProducto: producto.idProducto,
           nombre: producto.nombre,
           descripcion: producto.descripcion,
           precio: producto.precio,
           foto: producto.foto,
           cantidad: quantity + 1,
-        });
+        };
+        setProduct(ProductoMandado);
       } else {
+        let cantidad = quantity - 1;
+        //if para que no se pueda eliminar mas de 1 producto
+        if (cantidad < 1) {
+          console.log("No se puede eliminar mas");
+          setQuantity(1);
+          return;
+        }
         if (producto.cantidad > 1) {
           setQuantity(quantity - 1);
-          setProduct({
+          //Verificamos si hay mas de 1 producto
+
+          ProductoMandado = {
             idProducto: producto.idProducto,
             nombre: producto.nombre,
             descripcion: producto.descripcion,
             precio: producto.precio,
             foto: producto.foto,
             cantidad: quantity - 1,
-          });
+          };
+          setProduct(ProductoMandado);
         }
       }
-      handleAddToCart();
+      dispatch(addCantidadNueva(ProductoMandado));
+      funcionRefrescarCarrito();
     },
     [quantity, producto]
   );
@@ -75,6 +92,10 @@ const CartCard = ({ producto }) => {
     const productoExist = carrito.find(
       (producto) => producto.idProducto === product.idProducto
     );
+    /*let total = 0;
+    total = product.precio * quantity;
+    console.log("TotalQUant:", total);
+    dispatch*/
 
     if (productoExist) {
       // swal({
@@ -91,6 +112,7 @@ const CartCard = ({ producto }) => {
           cantidad: quantity,
         })
       );
+
       dispatch(addProducto(product));
       //   swal("El producto ha sido agregado", {
       //     icon: "success",

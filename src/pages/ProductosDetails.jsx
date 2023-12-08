@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaShoppingBag } from "react-icons/fa";
-import { addProducto } from "@slices/carritoSlice";
+import { addProducto, addCantidadNueva } from "@slices/carritoSlice";
 import { getProductosById } from "@slices/productosSlice";
 import Footer from "@components/Footer/Footer";
 import Banner from "@components/Banner";
@@ -33,22 +33,23 @@ const ProductosDetails = () => {
     if (productoExist) {
       swal({
         title: "El producto ya está en el carrito",
-        text: "¿Deseas agregar más?",
+        text: "¿Deseas remplazar la cantidad por la seleccionada?",
         icon: "warning",
         buttons: ["Cancelar", "Agregar"],
         dangerMode: true,
       }).then((willAdd) => {
         if (willAdd) {
-          dispatch(
-            addProducto({
-              idProducto: producto.idProducto,
-              nombre: producto.nombre,
-              precio: producto.precio,
-              foto: producto.foto,
-              descripcion: producto.descripcion,
-              cantidad: quantity,
-            })
-          );
+          let productoNuevo = {
+            idProducto: producto.idProducto,
+            nombre: producto.nombre,
+            precio: producto.precio,
+            foto: producto.foto,
+            descripcion: producto.descripcion,
+            cantidad: quantity,
+          };
+
+          dispatch(addCantidadNueva(productoNuevo));
+
           swal("El producto ha sido agregado", {
             icon: "success",
           });

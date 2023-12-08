@@ -12,15 +12,48 @@ const CarritoPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.productos);
+  const total2 = useSelector((state) => state.carrito.productos);
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
+
     dispatch(getCarrito());
+    //calcularTotal();
     setLoading(false);
   }, [dispatch]);
+
+  /*useEffect(() => {
+    //setItems(cartItems);
+    console.log("Items:", cartItems);
+    getCarritoLocal();
+    console.log("Items2:", cartItems);
+  }, [cartItems]);*/
+
+  //Funcion para sacar el carro del localstorage
+  const getCarritoLocal = () => {
+    let carritoLocal = localStorage.getItem("carrito");
+
+    if (carritoLocal) {
+      //Convertir a objeto y luego cambiar a array
+      const carritoArray = Object.values(JSON.parse(carritoLocal));
+      //Sacamos el total
+      let totalArray = 0;
+      carritoArray.forEach((producto) => {
+        totalArray += producto.precio * producto.cantidad;
+      });
+      setTotal(totalArray);
+      setItems(carritoArray);
+    } else {
+      setTotal(0);
+    }
+  };
+
+  useEffect(() => {
+    getCarritoLocal();
+  }, []);
 
   const handleCheckout = useCallback(() => {
     if (cartItems.length === 0) return;
@@ -45,9 +78,13 @@ const CarritoPage = () => {
                       <TbShoppingCartOff className="mx-auto font-semibold text-9xl text-gray-300" />
                     </div>
                   ) : (
-                    cartItems.map((producto) => (
+                    items.map((producto) => (
                       // <h2 key={producto.idProducto}>{producto.nombre}</h2>
-                      <CartCard key={producto.idProducto} producto={producto} />
+                      <CartCard
+                        key={producto.idProducto}
+                        producto={producto}
+                        funcionRefrescarCarrito={getCarritoLocal}
+                      />
                     ))
                   )}
                   {/* {cartItems.map((producto) => (
@@ -60,9 +97,7 @@ const CarritoPage = () => {
                   <h2 className="text-2xl font-semibold">Resumen</h2>
                   <div className="flex justify-between mt-4">
                     <span className="text-lg">Total</span>
-                    <span className="text-lg font-semibold">
-                      ${total.toFixed(2)}
-                    </span>
+                    <span className="text-lg font-semibold">${total}</span>
                   </div>
                   <button
                     className="bg-primary text-white w-full py-2 mt-4"

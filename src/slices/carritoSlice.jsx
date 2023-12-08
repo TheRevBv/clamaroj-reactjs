@@ -39,9 +39,33 @@ export const carritoSlice = createSlice({
         state.productos = carritoArray;
       }
     },
+    addCantidadNueva: (state, action) => {
+      //Mandamos el producto con la cantidad nueva
+      let productoNuevo = action.payload;
+      let carritoViejo = localStorage.getItem("carrito");
+      let carritoViejoArray = Object.values(JSON.parse(carritoViejo));
+
+      if (productoNuevo != null || productoNuevo != undefined) {
+        const productoExist = carritoViejoArray.find(
+          (producto) => producto.idProducto === productoNuevo.idProducto
+        );
+        //Si el producto existe, remplazamos el producto en el carrito
+        if (productoExist) {
+          //Borramos el producto viejo
+          carritoViejoArray = carritoViejoArray.filter(
+            (producto) => producto.idProducto !== productoExist.idProducto
+          );
+          //Agregamos el producto nuevo
+          carritoViejoArray.push(productoNuevo);
+          //Guardamos el carrito
+          localStorage.setItem("carrito", JSON.stringify(carritoViejoArray));
+        }
+      }
+    },
   },
 });
 
-export const { addProducto, removeProducto, getCarrito } = carritoSlice.actions;
+export const { addProducto, removeProducto, getCarrito, addCantidadNueva } =
+  carritoSlice.actions;
 
 export default carritoSlice.reducer;
