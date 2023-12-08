@@ -2,23 +2,16 @@ import { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MdPayments } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-// import { clearCart, removeProducto } from "@app/slices/carritoSlice";
-// import { createPedido } from "@app/slices/pedidosSlice";
+import { clearCarrito } from "@app/slices/carritoSlice";
+import { createPedidoAsync } from "@app/slices/pedidosSlice";
+import { validarFormulario } from "@utils/helpers";
 import swal from "sweetalert";
 
-const regExNombre = new RegExp("^[a-zA-Z ]+$");
-const regExNumero = new RegExp("^[0-9]{16}$");
-const regExFecha = new RegExp("^[0-9]{2}/[0-9]{2}$");
-const regExCodigo = new RegExp("^[0-9]{3}$");
-const regExCP = new RegExp("^[0-9]{5}$");
-const regExTelefono = new RegExp("^[0-9]{10}$");
-const regExDireccion = new RegExp("^[a-zA-Z0-9 ]+$");
-
-const CheckoutFormModal = () => {
+const CheckoutFormModal = ({ total, isModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.productos);
-  const [total, setTotal] = useState(0);
+  const [pedido, setPedido] = useState({});
   const [datosEnvio, setDatosEnvio] = useState({
     nombre: "",
     apellido: "",
@@ -44,6 +37,19 @@ const CheckoutFormModal = () => {
     cp: "",
   });
 
+  useEffect(() => {
+    resetData();
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    if (pedido.datosPago && pedido.datosEnvio) {
+      dispatch(createPedidoAsync(pedido));
+      dispatch(clearCarrito());
+      navigate("/orders");
+      swal("Pedido creado", "Su pedido ha sido creado con exito", "success");
+    }
+  }, [pedido]);
+
   const handleInputChange = (e) => {
     setDatosPago({
       ...datosPago,
@@ -51,63 +57,84 @@ const CheckoutFormModal = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let errores = {
-      required: "",
+  const handleInputChangeEnvio = (e) => {
+    setDatosEnvio({
+      ...datosEnvio,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const resetData = useCallback(() => {
+    setDatosPago({
       nombre: "",
       numero: "",
       fecha: "",
       codigo: "",
-    };
-    let hayErrores = false;
+    });
+    setDatosEnvio({
+      nombre: "",
+      apellido: "",
+      telefono: "",
+      direccion: "",
+      cp: "",
+    });
 
-    if (!regExNombre.test(datosPago.nombre)) {
-      errores.nombre = "El nombre debe contener solo letras";
-      errores.required = "Todos los campos son obligatorios";
-      hayErrores = true;
-    }
+    setErrors({
+      nombre: "",
+      numero: "",
+      fecha: "",
+      codigo: "",
+      required: "",
+      apellido: "",
+      telefono: "",
+      direccion: "",
+      cp: "",
+    });
+  }, []);
 
-    if (!regExNumero.test(datosPago.numero)) {
-      errores.numero = "El numero debe contener 16 digitos";
-      errores.required = "Todos los campos son obligatorios";
-      hayErrores = true;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const erroresPago = validarFormulario(datosPago, "pago");
+    const erroresEnvio = validarFormulario(datosEnvio, "envio");
 
-    if (!regExFecha.test(datosPago.fecha)) {
-      errores.fecha = "La fecha debe tener el formato MM/AA";
-      errores.required = "Todos los campos son obligatorios";
-      hayErrores = true;
-    }
-
-    if (!regExCodigo.test(datosPago.codigo)) {
-      errores.codigo = "El codigo debe contener 3 digitos";
-      errores.required = "Todos los campos son obligatorios";
-      hayErrores = true;
-    }
-
-    if (hayErrores) {
-      setErrors(errores);
+    if (erroresPago || erroresEnvio) {
+      setErrors({
+        ...erroresPago,
+        ...erroresEnvio,
+      });
       return;
     }
 
-    // dispatch(createPedido(datosPago));
-    dispatch(clearCart());
-    navigate("/pedidos");
-    swal("Pedido creado", "Su pedido ha sido creado con exito", "success");
+    const datos = {
+      datosEnvio,
+      datosPago,
+      cartItems,
+      total,
+    };
+
+    setPedido(datos);
+    console.log(datos);
+    resetData();
+
+    // dispatch(createPedido({ datosEnvio, datosPago, cartItems, total }));
+    // dispatch(clearCarrito());
+    // navigate("/pedidos");
+    // swal("Pedido creado", "Su pedido ha sido creado con exito", "success");
   };
 
   return (
     <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
       <h2 className="text-2xl font-semibold">Datos de envio</h2>
       <div className="flex flex-row gap-4 w-full h-1/2">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           <div className="relative">
             <input
               type="text"
               id="nombre"
               className="input-modal peer"
               placeholder=" "
+              value={datosEnvio.nombre}
+              onChange={handleInputChangeEnvio}
             />
             <label
               htmlFor="nombre"
@@ -125,6 +152,8 @@ const CheckoutFormModal = () => {
               id="apellido"
               className="input-modal peer"
               placeholder=" "
+              value={datosEnvio.apellido}
+              onChange={handleInputChangeEnvio}
             />
             <label
               htmlFor="apellido"
@@ -137,13 +166,15 @@ const CheckoutFormModal = () => {
             <span className="text-red-600 text-sm">{errors.apellido}</span>
           )}
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           <div className="relative">
             <input
               type="text"
               id="telefono"
               className="input-modal peer"
               placeholder=" "
+              value={datosEnvio.telefono}
+              onChange={handleInputChangeEnvio}
             />
             <label
               htmlFor="telefono"
@@ -161,6 +192,8 @@ const CheckoutFormModal = () => {
               id="direccion"
               className="input-modal peer"
               placeholder=" "
+              value={datosEnvio.direccion}
+              onChange={handleInputChangeEnvio}
             />
             <label
               htmlFor="direccion"
@@ -176,13 +209,15 @@ const CheckoutFormModal = () => {
       </div>
       <h2 className="text-2xl font-semibold">Datos de pago</h2>
       <div className="flex flex-row gap-4 w-full h-1/2">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           <div className="relative">
             <input
               type="text"
               id="nombre"
               className="input-modal peer"
               placeholder=" "
+              value={datosPago.nombre}
+              onChange={handleInputChange}
             />
             <label
               htmlFor="nombre"
@@ -200,6 +235,7 @@ const CheckoutFormModal = () => {
               id="numero"
               className="input-modal peer"
               placeholder=" "
+              value={datosPago.numero}
             />
             <label
               htmlFor="numero"
@@ -212,13 +248,14 @@ const CheckoutFormModal = () => {
             <span className="text-red-600 text-sm">{errors.numero}</span>
           )}
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           <div className="relative">
             <input
               type="text"
               id="fecha"
               className="input-modal peer"
               placeholder=" "
+              value={datosPago.fecha}
             />
             <label
               htmlFor="fecha"
@@ -236,6 +273,8 @@ const CheckoutFormModal = () => {
               id="codigo"
               className="input-modal peer"
               placeholder=" "
+              value={datosPago.codigo}
+              onChange={handleInputChange}
             />
             <label
               htmlFor="codigo"

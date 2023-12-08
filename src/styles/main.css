@@ -13,6 +13,19 @@
 .text-primary {
   @apply text-red-600;
 }
+
+.text-primary-dark {
+  @apply text-red-700;
+}
+
+.text-primary:hover {
+  @apply text-red-700;
+}
+
+.text-secondary {
+  @apply text-blue-950;
+}
+
 .border-primary {
   @apply border-red-600;
 }

@@ -155,27 +155,25 @@ const CarritoPage = () => {
         </div>
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <div className="bg-white rounded-md w-full max-w-2xl max-h-full">
-          <div className="flex flex-col items-center justify-center gap-4">
-            <h2 className="text-2xl font-semibold">Finalizar compra</h2>
-            <div className="flex items-center justify-center gap-4">
-              <span className="text-lg">Total</span>
-              <span className="text-lg font-semibold">${total.toFixed(2)}</span>
-            </div>
-            <div className="flex flex-col align-center justify-center gap-4">
-              <CheckoutFormModal />
-            </div>
+        <div className="flex flex-col items-center justify-center w-full">
+          <h2 className="text-2xl font-semibold">Finalizar compra</h2>
+          <div className="flex items-center justify-center gap-4">
+            <span className="text-lg">Total</span>
+            <span className="text-lg font-semibold">${total.toFixed(2)}</span>
           </div>
-          <div className="flex justify-center w-full">
-            <button
-              type="button"
-              className="bg-primary text-white w-full py-2 mt-4 rounded-md"
-              onClick={closeModal}
-            >
-              <IoClose className="inline-block mr-2" />
-              Cerrar
-            </button>
+          <div className="flex w-full justify-center">
+            <CheckoutFormModal isModalOpen={isModalOpen} total={total} />
           </div>
+        </div>
+        <div className="flex justify-center w-full">
+          <button
+            type="button"
+            className="bg-primary text-white w-full py-2 mt-4 rounded-md"
+            onClick={closeModal}
+          >
+            <IoClose className="inline-block mr-2" />
+            Cerrar
+          </button>
         </div>
       </Modal>
       <Footer />
