@@ -13,6 +13,7 @@ import ProductosDetails from "@pages/ProductosDetails";
 import ProductosPage from "@pages/ProductosPage";
 import ContactoPage from "@pages/ContactoPage";
 import NosotrosPage from "@pages/NosotrosPage";
+import PedidosPage from "@pages/PedidosPage";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
             <Route element={<ProtectedRoutes />}>
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
+              <Route exact path="/pedidos" element={<PedidosPage />} />
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>

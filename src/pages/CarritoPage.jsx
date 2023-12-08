@@ -32,13 +32,6 @@ const CarritoPage = () => {
     setLoading(false);
   }, [dispatch]);
 
-  /*useEffect(() => {
-    //setItems(cartItems);
-    console.log("Items:", cartItems);
-    getCarritoLocal();
-    console.log("Items2:", cartItems);
-  }, [cartItems]);*/
-
   //Funcion para sacar el carro del localstorage
   const getCarritoLocal = () => {
     let carritoLocal = localStorage.getItem("carrito");

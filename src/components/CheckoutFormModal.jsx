@@ -7,11 +7,63 @@ import { createPedidoAsync } from "@app/slices/pedidosSlice";
 import { validarFormulario } from "@utils/helpers";
 import swal from "sweetalert";
 
+// const datosPruebaEnvio = {
+//   nombre: "Juan",
+//   apellido: "Perez",
+//   telefono: "1234567890",
+//   direccion: "Calle 123",
+//   cp: "12345",
+// };
+
+// const datosPruebaPago = {
+//   nombre: "Juan Perez",
+//   numero: "1234567890123456",
+//   fecha: "12/24",
+//   codigo: "123",
+// };
+
 const CheckoutFormModal = ({ total, isModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.productos);
-  const [pedido, setPedido] = useState({});
+  const { user } = useSelector((state) => state.auth);
+  const [pedido, setPedido] = useState({
+    idPedido: 0,
+    idUsuario: 0,
+    idStatus: 1,
+    fecha: "",
+    fechaEntrega: "",
+    domicilio: "",
+    telefono: "",
+    razonSocial: "",
+    rfc: "",
+    tipoPago: "",
+    tipoEnvio: "",
+    tipoPedido: "",
+    total: 0,
+    detallesPedidos: [
+      {
+        idDetallePedido: 0,
+        fecha: "",
+        idPedido: 0,
+        idProducto: 0,
+        cantidad: 0,
+        precioUnitario: 0,
+        subtotal: 0,
+      },
+    ],
+  });
+  const [detallesPedido, setDetallesPedido] = useState([
+    {
+      idDetallePedido: 0,
+      fecha: "",
+      idPedido: 0,
+      idProducto: 0,
+      cantidad: 0,
+      precioUnitario: 0,
+      subtotal: 0,
+    },
+  ]);
   const [datosEnvio, setDatosEnvio] = useState({
     nombre: "",
     apellido: "",
@@ -19,6 +71,7 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
     direccion: "",
     cp: "",
   });
+  //Datos de pago solo para el formulario, no se guardan en el pedido
   const [datosPago, setDatosPago] = useState({
     nombre: "",
     numero: "",
@@ -26,7 +79,8 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
     codigo: "",
   });
   const [errors, setErrors] = useState({
-    nombre: "",
+    nombreP: "",
+    nombreE: "",
     numero: "",
     fecha: "",
     codigo: "",
@@ -38,15 +92,39 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
   });
 
   useEffect(() => {
+    let fechaActual = new Date();
+    setDetallesPedido(
+      cartItems.map((producto) => {
+        return {
+          idDetallePedido: 0,
+          fecha: new Date(
+            fechaActual.getFullYear(),
+            fechaActual.getMonth(),
+            fechaActual.getDay()
+          ),
+          idPedido: 0,
+          idProducto: producto.id,
+          cantidad: producto.cantidad,
+          precioUnitario: producto.precio,
+          subtotal: producto.precio * producto.cantidad,
+        };
+      })
+    );
+  }, [cartItems]);
+
+  useEffect(() => {
+    // setDatosPago(datosPruebaPago);
+    // setDatosEnvio(datosPruebaEnvio);
     resetData();
   }, [isModalOpen]);
 
   useEffect(() => {
-    if (pedido.datosPago && pedido.datosEnvio) {
+    if (pedido.idUsuario !== 0) {
+      console.log("Generando Pedido:", pedido);
       dispatch(createPedidoAsync(pedido));
       dispatch(clearCarrito());
-      navigate("/orders");
-      swal("Pedido creado", "Su pedido ha sido creado con exito", "success");
+      swal("Pedido completado", "Tu pedido ha sido registrado", "success");
+      navigate("/pedidos");
     }
   }, [pedido]);
 
@@ -78,13 +156,12 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
       direccion: "",
       cp: "",
     });
-
     setErrors({
-      nombre: "",
+      nombreE: "",
+      nombreP: "",
       numero: "",
       fecha: "",
       codigo: "",
-      required: "",
       apellido: "",
       telefono: "",
       direccion: "",
@@ -94,32 +171,61 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const erroresPago = validarFormulario(datosPago, "pago");
-    const erroresEnvio = validarFormulario(datosEnvio, "envio");
+    const erroresPago = validarFormulario(datosPago, "datosPago");
+    const erroresEnvio = validarFormulario(datosEnvio, "datosEnvio");
 
-    if (erroresPago || erroresEnvio) {
+    if (erroresPago.hayErrores || erroresEnvio.hayErrores) {
+      console.log("Hay errores", erroresPago, erroresEnvio);
+      const { nombreP, numero, fecha, codigo } = erroresPago.errores;
+      const { nombreE, apellido, telefono, direccion, cp } =
+        erroresEnvio.errores;
       setErrors({
-        ...erroresPago,
-        ...erroresEnvio,
+        nombreP,
+        numero,
+        fecha,
+        codigo,
+        nombreE,
+        apellido,
+        telefono,
+        direccion,
+        cp,
       });
       return;
     }
 
-    const datos = {
-      datosEnvio,
-      datosPago,
-      cartItems,
-      total,
+    let fechaActual = new Date();
+    let fechaEntrega = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
+
+    const pedidoTit = {
+      idPedido: 0,
+      idUsuario: user.id,
+      idStatus: 1,
+      //La fecha de pedido es la fecha actual en formato dd/mm/yyyy
+      fecha: new Date(
+        fechaActual.getFullYear(),
+        fechaActual.getMonth(),
+        fechaActual.getDay()
+      ),
+      //La fecha de entrega tiene que ser mayor a la fecha actual por un lapso de 3 dias
+      fechaEntrega: new Date(
+        fechaEntrega.getFullYear(),
+        fechaEntrega.getMonth(),
+        fechaEntrega.getDay()
+      ),
+      domicilio: datosEnvio.direccion,
+      telefono: datosEnvio.telefono,
+      razonSocial: `${datosEnvio.nombre} ${datosEnvio.apellido}`,
+      //Se agrega rfc publico en general por default
+      rfc: "XAXX010101000",
+      tipoPago: "T", //Se agrega pago con tarjeta por default
+      tipoEnvio: "D", //Se agrega envio a domicilio por default
+      tipoPedido: "V", //Se agrega venta por default
+      total: total * 1.16, //Se agrega iva
+      detallesPedidos: detallesPedido,
     };
 
-    setPedido(datos);
-    console.log(datos);
+    setPedido(pedidoTit);
     resetData();
-
-    // dispatch(createPedido({ datosEnvio, datosPago, cartItems, total }));
-    // dispatch(clearCarrito());
-    // navigate("/pedidos");
-    // swal("Pedido creado", "Su pedido ha sido creado con exito", "success");
   };
 
   return (
@@ -143,8 +249,8 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
               Nombre
             </label>
           </div>
-          {errors.nombre && (
-            <span className="text-red-600 text-sm">{errors.nombre}</span>
+          {errors.nombreE && (
+            <span className="text-red-600 text-sm">{errors.nombreE}</span>
           )}
           <div className="relative">
             <input
@@ -189,6 +295,29 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
           <div className="relative">
             <input
               type="text"
+              id="cp"
+              className="input-modal peer"
+              placeholder=" "
+              value={datosEnvio.cp}
+              onChange={handleInputChangeEnvio}
+            />
+            <label
+              htmlFor="cp"
+              className="label-modal peer-focus:text-red-600 peer-focus: peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto rtl:peer-focus:right-2.5"
+            >
+              Codigo Postal
+            </label>
+          </div>
+          {errors.cp && (
+            <span className="text-red-600 text-sm">{errors.cp}</span>
+          )}
+        </div>
+      </div>
+      <div className="flex flex-row gap-4 w-full h-1/2">
+        <div className="flex flex-col gap-4 w-full">
+          <div className="relative">
+            <input
+              type="text"
               id="direccion"
               className="input-modal peer"
               placeholder=" "
@@ -226,8 +355,8 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
               Nombre en la tarjeta
             </label>
           </div>
-          {errors.nombre && (
-            <span className="text-red-600 text-sm">{errors.nombre}</span>
+          {errors.nombreP && (
+            <span className="text-red-600 text-sm">{errors.nombreP}</span>
           )}
           <div className="relative">
             <input
@@ -236,6 +365,7 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
               className="input-modal peer"
               placeholder=" "
               value={datosPago.numero}
+              onChange={handleInputChange}
             />
             <label
               htmlFor="numero"
@@ -256,6 +386,7 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
               className="input-modal peer"
               placeholder=" "
               value={datosPago.fecha}
+              onChange={handleInputChange}
             />
             <label
               htmlFor="fecha"

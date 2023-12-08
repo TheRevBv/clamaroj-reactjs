@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const Modal = ({ isOpen, onClose, children }) => {
   const [modalOpen, setModalOpen] = useState(isOpen);
-  console.log("modalOpen", modalOpen);
 
   const closeModal = () => {
     setModalOpen(false);

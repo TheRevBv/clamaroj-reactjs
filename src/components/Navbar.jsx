@@ -119,7 +119,7 @@ const Navbar = () => {
           {user ? (
             <>
               <div
-                className="flex items-center justify-center space-x-2 cursor-pointer sm:flex-row flex-col"
+                className="flex items-center justify-center space-x-2 cursor-pointer sm:flex-row flex-col gap-2"
                 onClick={toggleMenu}
               >
                 {/* <img
@@ -127,7 +127,7 @@ const Navbar = () => {
                   alt="avatar"
                   className="w-8 h-8 rounded-full"
                 /> */}
-                {user.foto ? (
+                {user.foto && user.foto.includes(".png", ".jpg") ? (
                   <img
                     className="w-10 h-10 rounded-full object-cover"
                     src={user.foto}

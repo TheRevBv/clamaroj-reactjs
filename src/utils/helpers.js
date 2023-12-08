@@ -25,8 +25,8 @@ export const calculateTotalItems = (items) => {
  */
 export const validarFormulario = (valores, tipo) => {
   let errores = {
-    required: "",
-    nombre: "",
+    nombreP: "",
+    nombreE: "",
     numero: "",
     fecha: "",
     codigo: "",
@@ -40,19 +40,12 @@ export const validarFormulario = (valores, tipo) => {
   switch (tipo) {
     case "datosPago":
       if (!valores.nombre) {
-        errores.nombre = "El nombre es obligatorio";
+        errores.nombreP = "El nombre es obligatorio";
         hayErrores = true;
       } else if (!regExNombre.test(valores.nombre)) {
-        errores.nombre = "El nombre es incorrecto";
+        errores.nombreP = "El nombre es incorrecto";
         hayErrores = true;
       }
-      // if (!valores.apellido) {
-      //   errores.apellido = "El apellido es obligatorio";
-      //   hayErrores = true;
-      // } else if (!regExNombre.test(valores.apellido)) {
-      //   errores.apellido = "El apellido es incorrecto";
-      //   hayErrores = true;
-      // }
       if (!valores.numero) {
         errores.numero = "El número de tarjeta es obligatorio";
         hayErrores = true;
@@ -77,10 +70,10 @@ export const validarFormulario = (valores, tipo) => {
       break;
     case "datosEnvio":
       if (!valores.nombre) {
-        errores.nombre = "El nombre es obligatorio";
+        errores.nombreE = "El nombre es obligatorio";
         hayErrores = true;
       } else if (!regExNombre.test(valores.nombre)) {
-        errores.nombre = "El nombre es incorrecto";
+        errores.nombreE = "El nombre es incorrecto";
         hayErrores = true;
       }
       if (!valores.apellido) {

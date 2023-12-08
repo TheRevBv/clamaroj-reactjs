@@ -64,7 +64,6 @@ const CartCard = ({ producto, funcionRefrescarCarrito }) => {
         let cantidad = quantity - 1;
         //if para que no se pueda eliminar mas de 1 producto
         if (cantidad < 1) {
-          console.log("No se puede eliminar mas");
           setQuantity(1);
           return;
         }
