@@ -5,7 +5,7 @@ import Button from "@components/Button";
 // import GoogleSignIn from "@components/GoogleSignIn";
 import TextField from "@components/TextField";
 import { useSelector, useDispatch } from "react-redux";
-import { loginAsync } from "@slices/authSlice";
+import { loginAsync } from "@app/slices/authSlice";
 import swal from "sweetalert";
 
 const LoginPage = () => {

@@ -10,10 +10,11 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import authReducer from "@slices/authSlice";
+import authReducer from "@app/slices/authSlice";
 
-import productosReducer from "@slices/productosSlice";
-import carritoReducer from "@slices/carritoSlice";
+import productosReducer from "@app/slices/productosSlice";
+import carritoReducer from "@app/slices/carritoSlice";
+import pedidosReducer from "@app/slices/pedidosSlice";
 
 const persistConfig = {
   key: "root",
@@ -26,6 +27,7 @@ const persistedReducer = persistReducer(persistConfig, authReducer);
 const store = configureStore({
   reducer: {
     auth: persistedReducer,
+    pedidos: pedidosReducer,
     carrito: carritoReducer,
     productos: productosReducer,
   },

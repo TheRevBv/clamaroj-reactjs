@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Producto from "@components/ProductoItem";
 import Skeleton from "@components/Skeleton";
-import { getProductos } from "@slices/productosSlice";
+import { getProductos } from "@app/slices/productosSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Productos = () => {

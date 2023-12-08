@@ -81,3 +81,25 @@ body::-webkit-scrollbar {
 .password-input {
   @apply btn-textfield relative overflow-hidden;
 }
+
+.input-modal {
+  @apply w-full px-4 py-3 rounded-lg ring-red-400 focus:ring-4 focus:outline-none transition duration-300 border border-gray-300 focus:shadow-xl appearance-none;
+}
+
+.input-modal:focus {
+  @apply ring-red-400 focus:ring-4 focus:outline-none transition duration-300 border border-gray-300 focus:shadow-xl;
+}
+
+.input-modal::placeholder {
+  @apply text-gray-400;
+}
+
+.input-modal:focus::placeholder {
+  @apply text-gray-400;
+}
+
+.label-modal {
+  @apply absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5;
+}
+
+/* block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50  border-0 border-b-2 border-gray-300 appearance-none peer focus:ring-0 focus:border-red-600 focus:outline-none focus:z-10 */

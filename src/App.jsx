@@ -31,10 +31,10 @@ const App = () => {
             />
             <Route exact path="/nosotros" element={<NosotrosPage />} />
             <Route exact path="/contacto" element={<ContactoPage />} />
+            <Route exact path="/cart" element={<CarritoPage />} />
             <Route element={<ProtectedRoutes />}>
               <Route exact path="/register" element={<RegisterPage />} />
               <Route exact path="/login" element={<LoginPage />} />
-              <Route exact path="/cart" element={<CarritoPage />} />
             </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>

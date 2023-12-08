@@ -3,7 +3,8 @@ import {
   removeProducto,
   addProducto,
   addCantidadNueva,
-} from "@slices/carritoSlice";
+  getCarrito,
+} from "@app/slices/carritoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
@@ -92,20 +93,7 @@ const CartCard = ({ producto, funcionRefrescarCarrito }) => {
     const productoExist = carrito.find(
       (producto) => producto.idProducto === product.idProducto
     );
-    /*let total = 0;
-    total = product.precio * quantity;
-    console.log("TotalQUant:", total);
-    dispatch*/
-
     if (productoExist) {
-      // swal({
-      //   title: "El producto ya está en el carrito",
-      //   text: "¿Deseas agregar más?",
-      //   icon: "info",
-      //   buttons: ["Cancelar", "Agregar"],
-      //   dangerMode: true,
-      // }).then((willAdd) => {
-      //   if (willAdd) {
       dispatch(
         removeProducto({
           idProducto: product.idProducto,
@@ -114,25 +102,7 @@ const CartCard = ({ producto, funcionRefrescarCarrito }) => {
       );
 
       dispatch(addProducto(product));
-      //   swal("El producto ha sido agregado", {
-      //     icon: "success",
-      //   });
-      // } else {
-      //   swal("El producto no ha sido agregado");
-      // }
-      // });
     }
-    // else {
-    //   dispatch(
-    //     addProducto({
-    //       idProducto: producto.idProducto,
-    //       cantidad: quantity,
-    //     })
-    //   );
-    //   swal("El producto ha sido agregado", {
-    //     icon: "success",
-    //   });
-    // }
   };
 
   return (

@@ -13,7 +13,6 @@ export default defineConfig({
       "@pages": "/src/pages",
       "@styles": "/src/styles",
       "@app": "/src/app",
-      "@slices": "/src/slices",
       "@hooks": "/src/hooks",
       "@services": "/src/services",
       "@assets": "/src/assets",

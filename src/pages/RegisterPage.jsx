@@ -4,7 +4,7 @@ import Brand from "@components/Brand";
 import Button from "@components/Button";
 import TextField from "@components/TextField";
 import { useSelector, useDispatch } from "react-redux";
-import { registerAsync } from "@slices/authSlice";
+import { registerAsync } from "@app/slices/authSlice";
 import swal from "sweetalert";
 
 const RegisterPage = () => {

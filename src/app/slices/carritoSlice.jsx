@@ -1,19 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-
-// {
-//     "idProducto": 1,
-//     "codigo": "PROD000001",
-//     "nombre": "MICHE CUBANA",
-//     "descripcion": "Michelada con salsa maggi, inglesa, tabasco y cerveza clara",
-//     "precio": 60,
-//     "foto": "MICHE CUBANA.png",
-//     "merma": 5,
-//     "idStatus": 1,
-//     "fechaRegistro": "2023-05-02T00:00:00",
-//     "fechaModificacion": "2023-05-02T00:00:00",
-//     "carrito": [],
-//     "receta": null
-//   }
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const carritoSlice = createSlice({
   name: "carrito",
@@ -30,6 +15,18 @@ export const carritoSlice = createSlice({
         (producto) => producto.idProducto !== action.payload.idProducto
       );
       localStorage.setItem("carrito", JSON.stringify(state.productos));
+    },
+    updateProducto: (state, action) => {
+      state.productos = state.productos.map((producto) =>
+        producto.idProducto === action.payload.idProducto
+          ? action.payload
+          : producto
+      );
+      localStorage.setItem("carrito", JSON.stringify(state.productos));
+    },
+    clearCarrito: (state) => {
+      state.productos = [];
+      localStorage.removeItem("carrito");
     },
     getCarrito: (state) => {
       const carrito = localStorage.getItem("carrito");
@@ -65,7 +62,13 @@ export const carritoSlice = createSlice({
   },
 });
 
-export const { addProducto, removeProducto, getCarrito, addCantidadNueva } =
-  carritoSlice.actions;
+export const {
+  addProducto,
+  removeProducto,
+  getCarrito,
+  clearCarrito,
+  updateProducto,
+  addCantidadNueva,
+} = carritoSlice.actions;
 
 export default carritoSlice.reducer;

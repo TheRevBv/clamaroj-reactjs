@@ -4,7 +4,7 @@ import { FiLogOut } from "react-icons/fi";
 import { useNavigate, Link } from "react-router-dom";
 import logo from "@assets/img/logos/logo_inicio.png";
 import { useSelector, useDispatch } from "react-redux";
-import { logout } from "@slices/authSlice";
+import { logout } from "@app/slices/authSlice";
 import { persistor } from "@app/store";
 // import { FaCartShopping } from "react-icons/fa6";
 
