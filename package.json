@@ -4,7 +4,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": ""      
+      "url": ""
     }
   ],
   "version": "0.0.0",
@@ -41,6 +41,7 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
-    "vite": "^5.0.4"
+    "vite": "^4.5.0",
+    "vite-plugin-pwa": "^0.17.4"
   }
 }
