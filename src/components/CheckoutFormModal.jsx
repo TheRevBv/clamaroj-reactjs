@@ -7,52 +7,52 @@ import { createPedidoAsync } from "@app/slices/pedidosSlice";
 import { validarFormulario } from "@utils/helpers";
 import swal from "sweetalert";
 
-// const datosPruebaEnvio = {
-//   nombre: "Juan",
-//   apellido: "Perez",
-//   telefono: "1234567890",
-//   direccion: "Calle 123",
-//   cp: "12345",
-// };
+const datosPruebaEnvio = {
+  nombre: "Juan",
+  apellido: "Perez",
+  telefono: "1234567890",
+  direccion: "Calle 123",
+  cp: "12345",
+};
 
-// const datosPruebaPago = {
-//   nombre: "Juan Perez",
-//   numero: "1234567890123456",
-//   fecha: "12/24",
-//   codigo: "123",
-// };
+const datosPruebaPago = {
+  nombre: "Juan Perez",
+  numero: "1234567890123456",
+  fecha: "12/24",
+  codigo: "123",
+};
 
 const CheckoutFormModal = ({ total, isModalOpen }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.carrito.productos);
   const { user } = useSelector((state) => state.auth);
-  const [pedido, setPedido] = useState({
-    idPedido: 0,
-    idUsuario: 0,
-    idStatus: 1,
-    fecha: "",
-    fechaEntrega: "",
-    domicilio: "",
-    telefono: "",
-    razonSocial: "",
-    rfc: "",
-    tipoPago: "",
-    tipoEnvio: "",
-    tipoPedido: "",
-    total: 0,
-    detallesPedidos: [
-      {
-        idDetallePedido: 0,
-        fecha: "",
-        idPedido: 0,
-        idProducto: 0,
-        cantidad: 0,
-        precioUnitario: 0,
-        subtotal: 0,
-      },
-    ],
-  });
+  // const [pedido, setPedido] = useState({
+  //   idPedido: 0,
+  //   idUsuario: 0,
+  //   idStatus: 1,
+  //   fecha: "",
+  //   fechaEntrega: "",
+  //   domicilio: "",
+  //   telefono: "",
+  //   razonSocial: "",
+  //   rfc: "",
+  //   tipoPago: "",
+  //   tipoEnvio: "",
+  //   tipoPedido: "",
+  //   total: 0,
+  //   detallesPedidos: [
+  //     {
+  //       idDetallePedido: 0,
+  //       fecha: "",
+  //       idPedido: 0,
+  //       idProducto: 0,
+  //       cantidad: 0,
+  //       precioUnitario: 0,
+  //       subtotal: 0,
+  //     },
+  //   ],
+  // });
   const [detallesPedido, setDetallesPedido] = useState([
     {
       idDetallePedido: 0,
@@ -93,6 +93,7 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
 
   useEffect(() => {
     let fechaActual = new Date();
+    console.log("CartItems:", cartItems);
     setDetallesPedido(
       cartItems.map((producto) => {
         return {
@@ -103,13 +104,15 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
             fechaActual.getDay()
           ),
           idPedido: 0,
-          idProducto: producto.id,
+          idProducto: producto.idProducto,
           cantidad: producto.cantidad,
           precioUnitario: producto.precio,
           subtotal: producto.precio * producto.cantidad,
         };
       })
     );
+
+    console.log("DetallesPedido:", detallesPedido);
   }, [cartItems]);
 
   useEffect(() => {
@@ -118,15 +121,9 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
     resetData();
   }, [isModalOpen]);
 
-  useEffect(() => {
-    if (pedido.idUsuario !== 0) {
-      console.log("Generando Pedido:", pedido);
-      dispatch(createPedidoAsync(pedido));
-      dispatch(clearCarrito());
-      swal("Pedido completado", "Tu pedido ha sido registrado", "success");
-      navigate("/pedidos");
-    }
-  }, [pedido]);
+  // useEffect(() => {
+
+  // }, [pedido]);
 
   const handleInputChange = (e) => {
     setDatosPago({
@@ -196,7 +193,7 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
     let fechaActual = new Date();
     let fechaEntrega = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
 
-    const pedidoTit = {
+    const pedido = {
       idPedido: 0,
       idUsuario: user.id,
       idStatus: 1,
@@ -224,8 +221,14 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
       detallesPedidos: detallesPedido,
     };
 
-    setPedido(pedidoTit);
-    resetData();
+    dispatch(createPedidoAsync(pedido));
+    dispatch(clearCarrito());
+    swal(
+      "Pedido realizado",
+      "El pedido se ha realizado correctamente",
+      "success"
+    );
+    navigate("/pedidos");
   };
 
   return (
