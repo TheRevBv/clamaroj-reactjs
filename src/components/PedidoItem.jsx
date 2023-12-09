@@ -1,10 +1,13 @@
-// import { useState, useEffect, useCallback } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-
-// import { useSelector, useDispatch } from "react-redux";
-// import { getPedidoByIdAsync } from "@app/slices/pedidosSlice";
+import React, { useState } from "react";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 const PedidoItem = ({ pedido }) => {
+  const [mostrarDetalles, setMostrarDetalles] = useState(false);
+
+  const toggleDetalles = () => {
+    setMostrarDetalles(!mostrarDetalles);
+  };
+
   return (
     <div className="card mb-3" key={pedido.idPedido}>
       <div className="card-body">
@@ -24,13 +27,27 @@ const PedidoItem = ({ pedido }) => {
         <p className="card-text my-2">
           <strong>Total: </strong>${pedido.total}
         </p>
-
-        <Link
-          to={`/pedidos/${pedido.idPedido}`}
-          className="bg-primary text-white px-2 py-1 rounded-md inline-block hover:bg-primary-dark"
-        >
-          Ver detalles
-        </Link>
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text font-bold">Productos</p>
+            <button
+              onClick={toggleDetalles}
+              className="focus:outline-none text-blue-500 hover:text-blue-700"
+            >
+              {mostrarDetalles ? <FaAngleUp /> : <FaAngleDown />}
+            </button>
+          </div>
+          {mostrarDetalles && (
+            <ul className="list-disc pl-4">
+              {pedido.productos.map((producto, index) => (
+                <li className="mb-2" key={index}>
+                  {producto.nombre} Precio Unitario: {producto.precioUnitario}{" "}
+                  Cant. {producto.cantidad} Subtotal: ${producto.subtotal}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );
