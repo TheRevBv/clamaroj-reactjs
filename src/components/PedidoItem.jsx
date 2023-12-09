@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 // import { getPedidoByIdAsync } from "@app/slices/pedidosSlice";
 
 const PedidoItem = ({ pedido }) => {
+  console.log("pedido",pedido)
   return (
     <div className="card mb-3" key={pedido.idPedido}>
       <div className="card-body">
@@ -24,6 +25,8 @@ const PedidoItem = ({ pedido }) => {
         <p className="card-text my-2">
           <strong>Total: </strong>${pedido.total}
         </p>
+       
+
 
         <Link
           to={`/pedidos/${pedido.idPedido}`}

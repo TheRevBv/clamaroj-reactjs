@@ -98,6 +98,7 @@ const PedidosPage = () => {
   useEffect(() => {
     //No es necesario validar si el usuario está logueado, ya que ProtectedRoutes se encarga de eso
     dispatch(getPedidosAsync(user.id));
+    console.log("Pedidos", pedidos)
   }, [dispatch, user.id]);
 
   // Continua retornando un listado de pedidos por usuario
@@ -114,21 +115,33 @@ const PedidosPage = () => {
                 </h2>
               </div>
             </div>
-            <div className="flex flex-row justify-between container mx-auto px-4 h-full">
-              <div className="h-full overflow-y-auto w-full">
-                {loading && (
-                  <h2 className="text-center text-primary text-2xl">
-                    Cargando...
-                  </h2>
-                )}
-                {error && (
-                  <h2 className="text-center text-danger text-2xl">{error}</h2>
-                )}
-                {pedidos.map((pedido) => (
-                  <PedidoItem key={pedido.idPedido} pedido={pedido} />
-                ))}
-              </div>
-            </div>
+            {pedidos.length > 0 ? (
+              <>
+                <div className="flex flex-row justify-between container mx-auto px-4 h-full">
+                  <div className="h-full overflow-y-auto w-full">
+                    {loading && (
+                      <h2 className="text-center text-primary text-2xl">
+                        Cargando...
+                      </h2>
+                    )}
+                    {error && (
+                      <h2 className="text-center text-danger text-2xl">
+                        {error}
+                      </h2>
+                    )}
+                    {pedidos.map((pedido) => (
+                      <PedidoItem key={pedido.idPedido} pedido={pedido} />
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <h1>No hay pedidos</h1>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

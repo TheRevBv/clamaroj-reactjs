@@ -108,8 +108,10 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
           precioUnitario: producto.precio,
           subtotal: producto.precio * producto.cantidad,
         };
+        console.log("IdProducto1",idProducto);
       })
     );
+    console.log("detalle",detallesPedido);
   }, [cartItems]);
 
   useEffect(() => {
@@ -169,10 +171,46 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
     });
   }, []);
 
+  //Funcion para sacar el carro del localstorage
+  const getCarritoLocal = () => {
+    let carritoLocal = localStorage.getItem("carrito");
+    let carritoArray;
+    if (carritoLocal) {
+      //Convertir a objeto y luego cambiar a array
+       carritoArray = Object.values(JSON.parse(carritoLocal));
+      
+    } 
+    return carritoArray;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const erroresPago = validarFormulario(datosPago, "datosPago");
     const erroresEnvio = validarFormulario(datosEnvio, "datosEnvio");
+    let carritoCompl= getCarritoLocal();
+    console.log("carritoCompl",carritoCompl);
+    let arrayDettale =[]
+    let fechaActual2 = new Date();
+    carritoCompl.map((producto) => {
+      let obj={
+        idDetallePedido: 0,
+        fecha: new Date(
+          fechaActual2.getFullYear(),
+          fechaActual2.getMonth(),
+          fechaActual2.getDay()
+        ),
+        idPedido: 0,
+        idProducto: producto.idProducto,
+        cantidad: producto.cantidad,
+        precioUnitario: producto.precio,
+        subtotal: producto.precio * producto.cantidad,
+
+      }
+      console.log("IdProducto1",producto.idProducto);
+      arrayDettale.push(obj);
+     
+    })
+    console.log("arrayDettale",arrayDettale);
 
     if (erroresPago.hayErrores || erroresEnvio.hayErrores) {
       console.log("Hay errores", erroresPago, erroresEnvio);
@@ -195,11 +233,17 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
 
     let fechaActual = new Date();
     let fechaEntrega = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
+   
+    
+  
+
+
 
     const pedidoTit = {
       idPedido: 0,
       idUsuario: user.id,
       idStatus: 1,
+      idProducto: datosEnvio.idProducto,
       //La fecha de pedido es la fecha actual en formato dd/mm/yyyy
       fecha: new Date(
         fechaActual.getFullYear(),
@@ -221,7 +265,7 @@ const CheckoutFormModal = ({ total, isModalOpen }) => {
       tipoEnvio: "D", //Se agrega envio a domicilio por default
       tipoPedido: "V", //Se agrega venta por default
       total: total * 1.16, //Se agrega iva
-      detallesPedidos: detallesPedido,
+      detallesPedidos: arrayDettale,
     };
 
     setPedido(pedidoTit);
