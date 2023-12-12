@@ -52,7 +52,7 @@ const RegisterPage = () => {
       correo: userInput.correo,
       password: userInput.password,
       fechaNacimiento: userInput.fechaNacimiento,
-      foto: userInput.foto,
+      foto: userInput.foto ? userInput.foto : " ",
       idStatus: 1,
       roles: [
         {
