@@ -28,7 +28,10 @@
     "redux-persist": "^6.0.0",
     "sweetalert": "^2.1.2",
     "swiper": "^11.0.5",
-    "web-vitals": "^3.5.0"
+    "web-vitals": "^3.5.0",
+    "react-hook-form": "7.40.0",
+    "yup": "^0.32.11",
+    "@hookform/resolvers": "^2.6.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
@@ -41,7 +44,6 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
-    "vite": "^5.0.4",
     "vite-plugin-pwa": "^0.17.4"
   }
 }

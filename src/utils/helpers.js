@@ -17,6 +17,7 @@ export const calculateTotalItems = (items) => {
     return acc + item.cantidad;
   }, 0);
 };
+
 /**
  *
  * @param {JSON} valores

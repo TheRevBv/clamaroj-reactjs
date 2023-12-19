@@ -486,6 +486,7 @@ export default defineConfig({
       "@models": "/src/models",
       "@context": "/src/context",
       "@utils": "/src/utils",
+      "@data": "/src/data",
     },
   },
 });

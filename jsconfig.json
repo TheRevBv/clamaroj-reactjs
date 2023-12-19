@@ -5,7 +5,7 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@styles/*": ["src/styles/*"],
-      "@app/*": ["src/app/*"],      
+      "@app/*": ["src/app/*"],
       "@hooks/*": ["src/hooks/*"],
       "@services/*": ["src/services/*"],
       "@assets/*": ["src/assets/*"],
@@ -13,7 +13,8 @@
       "@layouts/*": ["src/layouts/*"],
       "@models/*": ["src/models/*"],
       "@context/*": ["src/context/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@data/*": ["src/data/*"]
     }
   }
 }

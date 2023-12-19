@@ -1,56 +1,43 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Brand from "@components/Brand";
 import Button from "@components/Button";
 // import GoogleSignIn from "@components/GoogleSignIn";
-import TextField from "@components/TextField";
+// import TextField from "@components/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { loginAsync } from "@app/slices/authSlice";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { LoginSchema } from "@data/validators";
 import swal from "sweetalert";
 
 const LoginPage = () => {
-  const { user } = useSelector((state) => state.auth);
-  const [userInput, setUserInput] = useState({
-    correo: "",
-    password: "",
-  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(LoginSchema),
+  });
 
-  const handleChange = (e) => {
-    setUserInput({
-      ...userInput,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(loginAsync(userInput));
-    swal(
-      `Bienvenido ${userInput.correo}`,
-      "Iniciaste sesion correctamente",
-      "success"
-    );
-    navigate("/");
-  };
-
-  const Inputs = [
-    {
-      id: 1,
-      type: "email",
-      placeholder: "Correo Electronico",
-      value: userInput.correo,
-      name: "correo",
+  const onSubmit = useCallback(
+    (data) => {
+      console.log(data);
+      dispatch(loginAsync(data));
+      swal({
+        title: "Bienvenido",
+        text: "Has iniciado sesion correctamente",
+        icon: "success",
+        button: "Aceptar",
+      });
+      reset();
+      navigate("/");
     },
-    {
-      id: 2,
-      type: "password",
-      placeholder: "Password",
-      value: userInput.password,
-      name: "password",
-    },
-  ];
+    [dispatch, navigate, reset]
+  );
 
   return (
     <>
@@ -61,7 +48,7 @@ const LoginPage = () => {
           {/* sign up form  */}
           <form
             className="bg-white w-96 mt-6 p-4 rounded-lg shadow-lg  space-y-4"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex justify-center items-center space-x-2 flex-col">
               <Brand />
@@ -69,19 +56,37 @@ const LoginPage = () => {
                 Iniciar Sesion
               </h1>
             </div>
-            <div className="flex flex-col space-y-6">
-              {Inputs.map((input) => (
-                <TextField
-                  key={input.id}
-                  type={input.type}
-                  placeholder={input.placeholder}
-                  value={input.value}
-                  name={input.name}
-                  onChange={handleChange}
-                />
-              ))}
+            <div className="flex flex-col space-y-4">
+              <input
+                key={1}
+                name="correo"
+                className="btn-textfield"
+                label="Correo electrónico"
+                type="text"
+                placeholder="Correo electrónico"
+                {...register("correo")}
+              />
+              {/* {errors?.correo?.message && (
+              )} */}
+              <span className="text-red-500 text-sm">
+                {errors?.correo?.message}
+              </span>
+              <input
+                key={2}
+                name="password"
+                label="Contraseña"
+                type="password"
+                className="password-input"
+                placeholder="Contraseña"
+                {...register("password")}
+              />
+              {/* {errors?.password?.message && (
+              )} */}
+              <span className="text-red-500 text-sm">
+                {errors?.password?.message}
+              </span>
             </div>
-            <Button text="Iniciar Sesion" />
+            <Button text="Iniciar Sesion" type="submit" />
             <div className="flex justify-center items-center">
               <NavLink
                 to="/register"
