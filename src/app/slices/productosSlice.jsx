@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { headers } from "@utils/constants";
 import axios from "axios";
 
 export const getProductos = createAsyncThunk(
@@ -6,7 +7,8 @@ export const getProductos = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/Productos`
+        `${import.meta.env.VITE_APP_API_URL}/Productos`,
+        { headers }
       );
       return response.data;
     } catch (e) {
@@ -21,7 +23,8 @@ export const getProductosById = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/Productos/${id}`
+        `${import.meta.env.VITE_APP_API_URL}/Productos/${id}`,
+        { headers }
       );
       return response.data;
     } catch (e) {

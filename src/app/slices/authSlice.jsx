@@ -26,7 +26,8 @@ export const registerAsync = createAsyncThunk(
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/auth/registrar`,
-        credentials
+        credentials,
+        { headers }
       );
       return response.data;
     } catch (e) {

@@ -1,62 +1,14 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axios from "axios";
-
-/* [
-  "idPedido": 176,
-  "idUsuario": 4,
-  "idStatus": 1,
-  "fecha": "2023-07-18T00:00:00",
-  "fechaEntrega": "2023-07-18T00:00:00",
-  "domicilio": "Calle Oaxaca - Colonia San José del Consuelo",
-  "telefono": "4778901234",
-  "razonSocial": "Proveedor163",
-  "rfc": "RFC989898H163",
-  "tipoPago": "TC",
-  "tipoEnvio": "T",
-  "tipoPedido": "V",
-  "total": 91,
-  "estatus": "Activo"
-},
-{
-  "idPedido": 193,
-  "idUsuario": 4,
-  "idStatus": 1,
-  "fecha": "2023-07-04T00:00:00",
-  "fechaEntrega": "2023-07-04T00:00:00",
-  "domicilio": "Calle Colima - Colonia Azteca",
-  "telefono": "4776789012",
-  "razonSocial": "Proveedor180",
-  "rfc": "RFC252525H180",
-  "tipoPago": "TD",
-  "tipoEnvio": "D",
-  "tipoPedido": "V",
-  "total": 62.25,
-  "estatus": "Activo"
-},
-{
-  "idPedido": 210,
-  "idUsuario": 4,
-  "idStatus": 1,
-  "fecha": "2023-07-21T00:00:00",
-  "fechaEntrega": "2023-07-21T00:00:00",
-  "domicilio": "Calle Tamaulipas - Colonia San Rafael",
-  "telefono": "4770123456",
-  "razonSocial": "Proveedor197",
-  "rfc": "RFC424242H197",
-  "tipoPago": "TB",
-  "tipoEnvio": "T",
-  "tipoPedido": "V",
-  "total": 72.5,
-  "estatus": "Activo"
-}
-] */
+import { headers } from "@utils/constants";
 
 export const getPedidosAsync = createAsyncThunk(
   "pedidos/getPedidosAsync",
   async (idUsuario) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/pedidos/usuario/${idUsuario}`
+        `${import.meta.env.VITE_APP_API_URL}/pedidos/usuario/${idUsuario}`,
+        { headers }
       );
       return response.data;
     } catch (e) {
@@ -71,7 +23,8 @@ export const getPedidoAsync = createAsyncThunk(
   async (id) => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_APP_API_URL}/pedidos/${id}`
+        `${import.meta.env.VITE_APP_API_URL}/pedidos/${id}`,
+        { headers }
       );
       return response.data;
     } catch (e) {
