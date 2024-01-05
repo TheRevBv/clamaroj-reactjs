@@ -15,7 +15,7 @@ const NosotrosPage = () => {
               <div className="md:w-1/2 h-full w-full">
                 <img
                   className="w-full h-full object-cover"
-                  src="/src/assets/img/logos/1.png"
+                  src="/assets/img/logos/1.png"
                   alt="nosotros"
                 />
               </div>

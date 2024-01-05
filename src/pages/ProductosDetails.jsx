@@ -100,7 +100,7 @@ const ProductosDetails = () => {
                   className="w-full mx-auto transform transition duration-300 hover:scale-105"
                   src={
                     producto.foto == `${producto.nombre}.png`
-                      ? `/src/assets/img/productos/${producto.foto}`
+                      ? `/assets/img/productos/${producto.foto}`
                       : producto.foto
                   }
                   alt={producto.nombre}

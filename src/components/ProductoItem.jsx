@@ -29,9 +29,7 @@ const ProductoItem = ({
       )}
       <img
         className="w-64 mx-auto transform transition duration-300 hover:scale-105"
-        src={
-          foto == `${nombre}.png` ? `/src/assets/img/productos/${foto}` : foto
-        }
+        src={foto == `${nombre}.png` ? `/assets/img/productos/${foto}` : foto}
         alt={nombre}
       />
       <div className="flex flex-col items-center my-3 space-y-2">
