@@ -118,7 +118,7 @@ const CartCard = ({ producto, funcionRefrescarCarrito }) => {
                 className="w-16 h-16 object-cover rounded-md"
                 src={
                   producto.foto == `${producto.nombre}.png`
-                    ? `/src/assets/img/productos/${producto.foto}`
+                    ? `/assets/img/productos/${producto.foto}`
                     : producto.foto
                 }
                 alt={producto.nombre}
